@@ -1,13 +1,16 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
+import MainLayout from '../layouts/MainLayout';
 import { Homepage } from '../pages/Homepage';
-import { QueueAdmin } from '../pages/QueueAdmin';
+import { QueueAuthAdmin } from '../pages/QueueAuthAdmin';
 
 export const MainRoutes = () => {
   return (
     <Routes>
-        <Route path='/' element={ <Homepage/> } ></Route>
-        <Route path='/queue/admin' element={ <QueueAdmin/> } ></Route>
+        <Route element={ <MainLayout/> }>
+            <Route path='/' element={ <Homepage/> } ></Route>
+            <Route path='/auth' element={ <QueueAuthAdmin/> } ></Route>
+        </Route>
     </Routes>
   )
 }
