@@ -1,0 +1,32 @@
+.d-f{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f:nth-child(2) {
+    justify-content: flex-end;
+}
+
+.bg-custom{
+    background-color: rgba(1, 116, 177, 1);
+}
+
+.hamburger{
+    display: none;
+    width: 38px;
+    height: 38px;
+}
+
+
+@media screen and ( max-width: 500px ) {
+    .hamburger{
+        display: block;
+    }
+    .btn{
+        display: none;
+    }
+    .logo{
+        width: 10rem;
+    }
+}

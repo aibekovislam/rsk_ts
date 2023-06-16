@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+.auth_block__img > img{
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill;
+    z-index: 1;
+}
+
+.auth_block__img{
+    position: relative;
+}
+
+.auth_block__form-child{
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+    width: 620px;
+    height: auto;
+    padding: 90px 10px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 11%;
+    margin: auto;
+}
+
+.logo{
+    width: 384px;
+    height: auto;
+    object-fit: cover;
+}
+
+.logo__title{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 4000;
+    line-height: 33px;
+    color: rgba(51, 48, 48, 1);
+}
+
+.auth-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 15px;
+    margin-top: 25px;
+}
+
+.auth-form__email{
+    border: 1px solid rgba(136, 126, 126, 1);
+    color: rgba(99, 92, 92, 1);
+    background: transparent;
+    border-radius: 5px;
+    padding: 15px 10px 0px 10px;
+    z-index: 2;
+    width: 330px;
+    height: 52px;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.auth-form__email:focus{
+    outline: solid rgba(57, 147, 195, 1);
+    border: none;
+}
+
+.auth-form__email:focus ~ .auth-form__email-placeholder{
+    top: 43.5%;
+    font-size: 13px;
+    color: rgba(57, 147, 195, 1);
+}
+
+.auth-form__email-placeholder{
+    color: rgba(166, 166, 166, 1);
+    text-align: left;
+    position: absolute;
+    top: 45.5%;
+    left: 25%;
+    z-index: 1;
+    transition-duration: 0.3s;
+}
+
+.active__email{
+    position: absolute;
+    font-size: 13px;
+    top: 43.5%;
+    color: rgba(57, 147, 195, 1);
+}
+
+.auth-form__password{
+    border: 1px solid rgba(136, 126, 126, 1);
+    border-radius: 5px;
+    background: transparent;
+    padding: 15px 10px 0px 10px;
+    width: 330px;
+    height: 52px;
+    z-index: 2;
+    color: rgba(99, 92, 92, 1);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.auth-form__password[type='password']{
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.29em;
+}
+
+.auth-form__password-placeholder{
+    color: rgba(166, 166, 166, 1);
+    text-align: left;
+    position: absolute;
+    top: 57.5%;
+    left: 25%;
+    z-index: 1;
+    transition-duration: 0.3s;
+}
+
+.auth-form__password:focus{
+    outline: solid rgba(57, 147, 195, 1);
+}
+
+.auth-form__password:focus ~ .auth-form__password-placeholder{
+    top: 56%;
+    font-size: 13px;
+    color: rgba(57, 147, 195, 1);
+}
+
+.active__password{
+    position: absolute;
+    font-size: 13px;
+    top: 56%;
+    color: rgba(57, 147, 195, 1);
+}
+
+.eye{
+    position: absolute;
+    top: 56.3%;
+    right: 0;
+    left: 69%;
+    width: 38px;
+    height: 38px;
+    padding: 5px;
+    border-radius: 100%;
+    fill: rgba(166, 166, 166, 1);
+    cursor: pointer;
+    transition-duration: 0.3s;
+    z-index: 3;
+}
+
+.eye:hover{
+    background-color: #eee;
+}
+
+.forgot-password{
+    color: rgba(57, 147, 195, 1);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.forgot-password:hover{
+    text-decoration: underline;
+}
+
+.auth-form__btn{
+    background-color: rgba(57, 147, 195, 1);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    border: none;
+    width: 100%;
+    height: 55px;
+    border-radius: 9px;
+    transition-duration: 0.3s;
+}
+
+.auth-form__btn:hover{
+    background-color: rgb(53, 136, 180);
+}
