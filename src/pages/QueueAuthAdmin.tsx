@@ -2,8 +2,14 @@ import React from 'react';
 import '../static/style.css';
 import '../static/queueAdminAuth.css';
 import { ReactComponent as LogoSVG } from '../images/RSK_Bank_Logo 1 (1).svg';
+import { ReactComponent as EyeOffSVG } from '../images/eye-off-outline.svg';
+import { ReactComponent as EyeSVG } from '../images/eye-outline.svg';
 
-export const QueueAuthAdmin = () => {
+export const QueueAuthAdmin: React.FC = () => {
+  const [ eyeState, setEyeState ] = React.useState(false);
+  const [ inputType, setInputType ] = React.useState('password');
+  const [ labelEmailState, setLabelEmailState ] = React.useState(false);
+  const [ labelPasswordState, setLabelPasswordState ] = React.useState(false);
   return (
     <div className='auth_block'>
       <div className='auth_block__img'>
@@ -13,8 +19,25 @@ export const QueueAuthAdmin = () => {
             <LogoSVG className='logo' />
             <div className='logo__title'>Система электронных очередей</div>
             <form className='auth-form'>
-              <input placeholder='Введите адрес электронной почты' type="text" className='auth-form__email' />
-              <input placeholder='Введите пароль' type="password" className='auth-form__password' />
+              <input type="text" className='auth-form__email' name='email' onChange={(e) => {
+                e.target.value !== "" ? setLabelEmailState(true) : setLabelEmailState(false)
+              }} />
+              <label className={`auth-form__email-placeholder ${labelEmailState ? "active__email" : ""}`}>Введите адрес электронной почты</label>
+              <input type={inputType} className='auth-form__password' name='password' onChange={(e) => {
+                e.target.value !== "" ? setLabelPasswordState(true) : setLabelPasswordState(false)
+              }} />
+              <label className={`auth-form__password-placeholder ${labelPasswordState ? "active__password" : ""}`}>Введите пароль</label>
+              { eyeState ? (
+                <EyeSVG className='eye' onClick={() => {
+                  setEyeState(!eyeState);
+                  setInputType("password")
+                }} />
+              ) : (
+                <EyeOffSVG className='eye' onClick={() => {
+                  setEyeState(!eyeState);
+                  setInputType("text")
+                }} />
+              ) }
               <a href='#' className='forgot-password'>Забыли пароль?</a>
               <button className='auth-form__btn'>Войти</button>
             </form>
