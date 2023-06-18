@@ -1,32 +1,73 @@
-.d-f{
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+.navigation{
+    width: 100%;
+    height: auto;
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.nav__items{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
-.d-f:nth-child(2) {
-    justify-content: flex-end;
+.logo{
+    width: 160px;
+    height: 55px;
+    object-fit: cover;
 }
 
-.bg-custom{
-    background-color: rgba(1, 116, 177, 1);
+.nav__window{
+    width: 155px;
+    height: 40px;
+    font-size: 32px;
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(57, 147, 195, 1);
 }
 
-.hamburger{
-    display: none;
-    width: 38px;
-    height: 38px;
+.vac__off__on{
+    font-size: 23px;
+    line-height: 27px;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
 }
 
+.vac > input {
+	display : none;
+}
+.vac > label {
+	position: relative;
+	cursor: pointer;
+	display :block;
+	width: 50px;
+	height: 30px;
+	background: #cccccc;
+	border-radius: 50px;
+	transition: 300ms linear;
+}
 
-@media screen and ( max-width: 500px ) {
-    .hamburger{
-        display: block;
-    }
-    .btn{
-        display: none;
-    }
-    .logo{
-        width: 10rem;
-    }
+.vac > label:before {
+	position: absolute;
+	top: 50%;
+	left: 2px;
+	transform: translateY(-50%);
+	content: "";
+	display: block;
+	width: 25px;
+	height: 25px;
+	background: #ffffff;
+	border-radius: 50%;
+	transition: left 300ms linear;
+}
+
+.vac > input:checked + label {
+	background: rgba(57, 147, 195, 1);
+}
+
+.vac > input:checked + label:before {
+	left: 23px;
 }
