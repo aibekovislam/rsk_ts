@@ -1,14 +1,16 @@
-import React from 'react'
-import NavigationBar from '../components/NavigationBar'
-import { Outlet } from 'react-router-dom';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const MainLayout = () => {
   return (
     <>
-        <NavigationBar/>
-        <Outlet/>
+      <Navbar />
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <Outlet />
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;
