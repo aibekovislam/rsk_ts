@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   height: 93px;
-
+}
 
 .window_number {
   font-size: 32px;
@@ -71,6 +71,7 @@
   border-radius: 8px;
 }
 
-.nav_link_item:hover > svg{
-  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg) brightness(84%) contrast(78%);
+.nav_link_item:hover > svg {
+  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
+    brightness(84%) contrast(78%);
 }

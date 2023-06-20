@@ -4,12 +4,32 @@ import "../static/queueAdminAuth.css";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1 (1).svg";
 import { ReactComponent as EyeOffSVG } from "../images/eye-off-outline.svg";
 import { ReactComponent as EyeSVG } from "../images/eye-outline.svg";
+import { useAuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 export const QueueAuthAdmin: React.FC = () => {
   const [eyeState, setEyeState] = React.useState(false);
   const [inputType, setInputType] = React.useState("password");
   const [labelEmailState, setLabelEmailState] = React.useState(false);
   const [labelPasswordState, setLabelPasswordState] = React.useState(false);
+
+  const [isLogin, setIsLogin] = React.useState(true);
+  const { register, login, user } = useAuthContext();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    if (isLogin) {
+      login(data);
+    } else {
+      register(data);
+    }
+  };
+
+  if (user) {
+    return <Navigate replace to="/" />;
+  }
+
   return (
     <div className="auth_block">
       <div className="auth_block__img">
@@ -18,7 +38,7 @@ export const QueueAuthAdmin: React.FC = () => {
           <div className="auth_block__form-child">
             <LogoSVG className="logo" />
             <div className="logo__title">Система электронных очередей</div>
-            <form className="auth-form">
+            <form className="auth-form" onSubmit={handleSubmit}>
               <input
                 type="text"
                 className="auth-form__email"
