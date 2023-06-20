@@ -1,0 +1,90 @@
+.hero{
+    margin-top: 30px;
+}
+
+.bottomNav{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.allCounter{
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.allCounter > span{
+    color: rgba(1, 116, 177, 1);
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.categories{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+}
+
+.category__block{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.category__title{
+    font-size: 22px;
+    font-weight: 400;
+    max-width: 235px;
+}
+
+.circle_category{
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+}
+
+/* Контент который находится ниже; */
+
+.content__queue{
+    margin-top: 25px;
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 35px;
+}
+
+.queue__state{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    border-radius: 15px;
+}
+
+.queue__state__title{
+    display: flex;
+    align-items: center;
+}
+
+.arrowRight{
+    width: 25px;
+    height: 25px;
+}
+
+.queue__state__counter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 41px;
+    height: 41px;
+    border: 0.8px solid rgba(57, 147, 195, 0.7);
+    color: rgba(1, 116, 177, 1);
+    font-weight: 500;
+}
