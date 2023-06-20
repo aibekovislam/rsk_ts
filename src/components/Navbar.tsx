@@ -15,29 +15,29 @@ const Navbar: React.FC = () => {
   // const user: Iuser[] = [{}];
 
   interface Ipage {
-    icon: string;
+    icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
     title: string;
     link: string;
   }
 
   const pages: Ipage[] = [
     {
-      icon: "../images/Vector (1).svg",
+      icon: <IconSVG/>,
       title: "Клиент",
       link: "/client",
     },
     {
-      icon: "../images/Group (2).svg",
+      icon: <Icon2SVG/>,
       title: "Список очередей",
       link: "/",
     },
     {
-      icon: "../images/Group (3).svg",
+      icon: <Icon3SVG/>,
       title: "Список операций",
       link: "/",
     },
     {
-      icon: "../images/Vector (3).svg",
+      icon: <Icon4SVG/>,
       title: "Рабочий чат",
       link: "/",
     },
@@ -79,10 +79,11 @@ const Navbar: React.FC = () => {
               <li className={styles.nav_link_item}>
                 <a href={page.link}>
                   <button className={styles.nav_link_item}>
-                    <img src={page.icon} alt="" />
-                    {page.title}
-                  </button>
+                  { page.icon }
+                  {page.title}
+                </button>
                 </a>
+
               </li>
             </ul>
           ))}
