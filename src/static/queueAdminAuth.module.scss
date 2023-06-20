@@ -11,7 +11,7 @@
     position: relative;
 }
 
-.auth_block__form-child{
+.auth_block__form__child{
     background-color: rgba(255, 255, 255, 1);
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
     width: 620px;
@@ -44,7 +44,7 @@
     color: rgba(51, 48, 48, 1);
 }
 
-.auth-form{
+.auth__form{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,7 +53,7 @@
     margin-top: 25px;
 }
 
-.auth-form__email{
+.auth__form__email{
     border: 1px solid rgba(136, 126, 126, 1);
     color: rgba(99, 92, 92, 1);
     background: transparent;
@@ -66,35 +66,36 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.auth-form__email:focus{
+.auth__form__email:focus{
     outline: solid rgba(57, 147, 195, 1);
     border: none;
 }
 
-.auth-form__email:focus ~ .auth-form__email-placeholder{
-    top: 43.5%;
+.auth__form__email:focus ~ .auth__form__email__placeholder{
+    top: 43%;
     font-size: 13px;
     color: rgba(57, 147, 195, 1);
 }
 
-.auth-form__email-placeholder{
+.auth__form__email__placeholder{
     color: rgba(166, 166, 166, 1);
     text-align: left;
     position: absolute;
-    top: 45.5%;
+    top: 45%;
     left: 25%;
     z-index: 1;
     transition-duration: 0.3s;
+    font-size: 16px;
 }
 
 .active__email{
     position: absolute;
     font-size: 13px;
-    top: 43.5%;
+    top: 42.5%;
     color: rgba(57, 147, 195, 1);
 }
 
-.auth-form__password{
+.auth__form__password{
     border: 1px solid rgba(136, 126, 126, 1);
     border-radius: 5px;
     background: transparent;
@@ -106,27 +107,28 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.auth-form__password[type='password']{
+.auth__form__password[type='password']{
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 0.29em;
 }
 
-.auth-form__password-placeholder{
+.auth__form__password__placeholder{
     color: rgba(166, 166, 166, 1);
     text-align: left;
     position: absolute;
-    top: 57.5%;
+    top: 56.6%;
     left: 25%;
     z-index: 1;
     transition-duration: 0.3s;
+    font-size: 16px;
 }
 
-.auth-form__password:focus{
+.auth__form__password:focus{
     outline: solid rgba(57, 147, 195, 1);
 }
 
-.auth-form__password:focus ~ .auth-form__password-placeholder{
-    top: 56%;
+.auth__form__password:focus ~ .auth__form__password__placeholder{
+    top: 55%;
     font-size: 13px;
     color: rgba(57, 147, 195, 1);
 }
@@ -134,7 +136,7 @@
 .active__password{
     position: absolute;
     font-size: 13px;
-    top: 56%;
+    top: 55%;
     color: rgba(57, 147, 195, 1);
 }
 
@@ -157,7 +159,7 @@
     background-color: #eee;
 }
 
-.forgot-password{
+.forgot__password{
     color: rgba(57, 147, 195, 1);
     width: 100%;
     display: flex;
@@ -165,11 +167,11 @@
     cursor: pointer;
 }
 
-.forgot-password:hover{
+.forgot__password:hover{
     text-decoration: underline;
 }
 
-.auth-form__btn{
+.auth__form__btn{
     background-color: rgba(57, 147, 195, 1);
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -181,6 +183,6 @@
     transition-duration: 0.3s;
 }
 
-.auth-form__btn:hover{
+.auth__form__btn:hover{
     background-color: rgb(53, 136, 180);
 }

@@ -1,0 +1,239 @@
+.wrapper {
+  display: flex;
+  gap: 22px;
+  margin-top: 71px;
+}
+
+// WRAPPER LEFT
+.wrapper_left {
+  width: 750px;
+  height: 831px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.937);
+  padding: 53px;
+  color: #333030;
+  border-radius: 5px;
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -25px;
+  gap: 10px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.client_number {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 59px;
+  color: #333030;
+}
+
+.operation {
+  color: #3993c3;
+  line-height: 29px;
+  font-weight: 500;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.data h5 {
+  color: #333030;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.client_data {
+  display: grid;
+  grid-template-columns: repeat(3, 29%);
+  grid-template-rows: repeat(3, 54px);
+  gap: 40px;
+  margin-top: 40px;
+  align-items: end;
+}
+
+.client_data p {
+  font-size: 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  color: #333030;
+}
+
+.notes {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 10px 5px;
+  gap: 10px;
+  margin-top: 60px;
+
+  width: 100%;
+  height: 142px;
+
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+// LEFT BUTTONS
+
+.btns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20.4px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.translate {
+  border: 1px solid #3993c3;
+  border-radius: 8px;
+  width: 200.08px;
+  height: 54px;
+}
+
+.cancel {
+  border: 1px solid rgba(231, 81, 81, 0.82);
+  border-radius: 8px;
+  width: 200.08px;
+  height: 54px;
+}
+
+.complete {
+  background: #57c955;
+  border-radius: 8px;
+  width: 200.08px;
+  height: 54px;
+  color: #fff;
+}
+
+// WRAPPER RIGHT
+
+.wrapper_right {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+
+  filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.05));
+
+  color: #000000;
+}
+
+.ticket {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 427px;
+  height: 136.16px;
+
+  background: #ffffff;
+  border-bottom: 2px dashed #0174b1;
+  border-radius: 6.71707px 6.71707px 0px 0px;
+}
+
+.ticket_subinfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0px;
+  gap: 6px;
+
+  width: 427px;
+  height: 355px;
+
+  background: #ffffff;
+  border-radius: 0px 0px 6.71707px 6.71707px;
+}
+
+.ticket_number {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 59px;
+  color: #0174b1;
+}
+
+.ticket_pin {
+  display: flex;
+  text-align: center;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 34px;
+
+  color: #000000;
+}
+
+.pin {
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 34px;
+  color: #0174b1;
+}
+
+.ticket_subinfo h4 {
+  font-weight: 500;
+  font-size: 27.507px;
+  line-height: 34px;
+  width: 367px;
+}
+
+.ticket_subinfo p {
+  width: 254px;
+  font-size: 19px;
+  line-height: 23px;
+}
+
+span {
+  font-size: 19px;
+  color: #0174b1;
+}
+
+// RIGHT BUTTONS
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.print {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  width: 200px;
+  height: 54px;
+  gap: 10px;
+  color: #fff;
+  background: #4097c5;
+  border: 1px solid #3993c3;
+  border-radius: 8px;
+}
+
+.edit {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  width: 200px;
+  height: 54px;
+  gap: 10px;
+
+  border: 1px solid #3993c3;
+  border-radius: 8px;
+}

@@ -7,7 +7,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   height: 93px;
 }
 
@@ -41,6 +40,7 @@
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
+  height: 90px;
   align-items: center;
   gap: 65px;
 }
@@ -59,6 +59,8 @@
   gap: 13.5px;
   font-size: 20px;
   transition: 0.2s;
+  border: none;
+  color: inherit;
 }
 
 .nav_link_item:focus,
