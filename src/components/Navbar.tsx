@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "./Navbar.module.scss";
-import "../static/style.css";
+import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1.svg";
 import { ReactComponent as IconSVG } from "../images/Vector (1).svg";
 import { ReactComponent as Icon2SVG } from "../images/Group (4).svg";
 import { ReactComponent as Icon3SVG } from "../images/Group (3).svg";
 import { ReactComponent as Icon4SVG } from "../images/Vector (3).svg";
 import { ReactComponent as AvatarSVG } from "../images/изображение 5.svg";
+import { ReactComponent as SwitchoffSVG } from "../images/Switch (1).svg";
+import { ReactComponent as SwitchonSVG } from "../images/Switch.svg";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   // const user: Iuser[] = [{}];
@@ -21,7 +24,7 @@ const Navbar: React.FC = () => {
     {
       icon: "../images/Vector (1).svg",
       title: "Клиент",
-      link: "/auth",
+      link: "/client",
     },
     {
       icon: "../images/Group (2).svg",
@@ -74,10 +77,12 @@ const Navbar: React.FC = () => {
           {pages.map((page) => (
             <ul className={styles.nav_items} key={page.title}>
               <li className={styles.nav_link_item}>
-                <button className={styles.nav_link_item}>
-                  <img src={page.icon} alt="" />
-                  {page.title}
-                </button>
+                <a href={page.link}>
+                  <button className={styles.nav_link_item}>
+                    <img src={page.icon} alt="" />
+                    {page.title}
+                  </button>
+                </a>
               </li>
             </ul>
           ))}
