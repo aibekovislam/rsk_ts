@@ -61,7 +61,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
 
   async function register(credential: any): Promise<void> {
     try {
-      await axios.post(`${BASE_URL}/auth/users/`, credential);
+      await axios.post(`${BASE_URL}/user/users/`, credential);
     } catch (error) {
       console.log(error);
     }
@@ -70,12 +70,12 @@ function AuthContext({ children }: { children: React.ReactNode }) {
   async function login(credentials: any): Promise<void> {
     try {
       const { data: tokens } = await axios.post(
-        `${BASE_URL}/auth/jwt/create/`,
+        `${BASE_URL}/login/jwt/create/`,
         credentials
       );
       localStorage.setItem("tokens", JSON.stringify(tokens));
 
-      const { data } = await $axios.get(`${BASE_URL}/auth/users/me/`);
+      const { data } = await $axios.get(`${BASE_URL}/user/profile/`);
 
       dispatch({
         type: ACTIONS.user,
@@ -98,7 +98,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
     try {
       const tokens = JSON.parse(localStorage.getItem("tokens") || "");
       if (tokens) {
-        const { data } = await $axios.get(`${BASE_URL}/auth/users/me/`);
+        const { data } = await $axios.get(`${BASE_URL}/user/profile/`);
 
         dispatch({
           type: ACTIONS.user,
@@ -117,7 +117,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
 
   async function activateUser(uid: string, token: string): Promise<void> {
     try {
-      await axios.post(`${BASE_URL}/auth/users/activation/`, {
+      await axios.post(`${BASE_URL}/user/users/activation/`, {
         uid,
         token,
       });
