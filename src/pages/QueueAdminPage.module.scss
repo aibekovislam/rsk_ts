@@ -65,6 +65,7 @@
     box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.05);
     padding: 16px;
     border-radius: 15px;
+    cursor: pointer;
 }
 
 .queue__state__title{
@@ -75,6 +76,11 @@
 .arrowRight{
     width: 25px;
     height: 25px;
+    transition-duration: 0.3s;
+}
+
+.reverseArrow{
+    transform: rotate(90deg);
 }
 
 .queue__state__counter{
@@ -88,3 +94,98 @@
     color: rgba(1, 116, 177, 1);
     font-weight: 500;
 }
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .table.visible{
+    opacity: 1;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+
+  .counter{
+    font-weight: 600;
+  }
+
+  .counter > span {
+    margin-left: 10px;
+    width: 14px;
+    height: 14px;
+    background-color: yellow;
+    display: inline-block;
+    border-radius: 100%;
+  }
+  
+  th {
+    color: rgba(64, 151, 197, 1);
+  }
+  
+  .even__row {
+    background-color: rgba(248, 248, 248, 1);
+  }
+
+  .buttonTD{
+    width: 195px;
+    height: auto;
+    padding: 0;
+    padding-bottom: 15px;
+  }
+  
+  .accept__button {
+    background-color: rgba(64, 151, 197, 1);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 20px;
+    width: 195px;
+    height: auto;
+    padding: 10px 0;
+    margin-right: 15px;
+    transition-duration: 0.3s;
+  }
+  
+  .accept__button:hover {
+    opacity: 0.8;
+  }
+
+  .svgBTN{
+    width: 55px;
+    cursor: pointer;
+  }
+
+  .time{
+    color: rgba(1, 116, 177, 1);
+    border: 1px solid rgba(1, 116, 177, 1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 225px;
+  }
+
+  .optionsBlock {
+    position: absolute;
+    top: 40%;
+    left: 70%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transition-duration: 0.3s;
+  }
+  
+  .optionsBlock button {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
