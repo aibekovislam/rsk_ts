@@ -74,3 +74,32 @@
 .nav_link_item:hover > svg{
   filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg) brightness(84%) contrast(78%);
 }
+
+.timeBreak{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 55px;
+}
+
+.switch{
+  cursor: pointer;
+}
+
+.chat{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chatSVG{
+  width: 25px;
+  height: 25px;
+}
+
+.header__nav__start{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}

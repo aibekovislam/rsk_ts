@@ -98,7 +98,7 @@
 .table {
     border-collapse: collapse;
     width: 100%;
-    transition: opacity 0.3s ease;
+    transition-duration: 0.3s;
   }
 
   .table.visible{
@@ -118,7 +118,6 @@
     margin-left: 10px;
     width: 14px;
     height: 14px;
-    background-color: yellow;
     display: inline-block;
     border-radius: 100%;
   }
@@ -189,3 +188,4 @@
     padding: 5px;
     margin-bottom: 5px;
   }
+
