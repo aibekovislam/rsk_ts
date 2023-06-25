@@ -70,11 +70,6 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 }
-
-.nav_link_item:hover > svg{
-  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg) brightness(84%) contrast(78%);
-}
-
 .timeBreak{
   display: flex;
   align-items: center;
@@ -102,4 +97,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 25px;
+}
+.nav_link_item:hover > svg {
+  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
+    brightness(84%) contrast(78%);
 }

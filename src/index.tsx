@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueueContext } from './contexts/QueueContext';
+import AuthContext from "./context/AuthContext";
+
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <BrowserRouter>
-    <QueueContext>
-      <App />
-    </QueueContext>
+    <AuthContext>
+      <QueueContext>
+        <App />
+      </QueueContext>
+    </AuthContext>
   </BrowserRouter>
 );
-
