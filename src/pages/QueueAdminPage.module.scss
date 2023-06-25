@@ -170,10 +170,16 @@
     width: 225px;
   }
 
+  
+  tr {
+    position: relative;
+  }
+  
   .optionsBlock {
     position: absolute;
-    top: 40%;
+    top: 80%;
     left: 70%;
+    right: 0;
     background-color: #fff;
     padding: 10px;
     border-radius: 4px;
@@ -189,3 +195,157 @@
     margin-bottom: 5px;
   }
 
+
+
+  @media screen and (max-width: 768px) {
+    .hero {
+      margin-top: 20px;
+    }
+  
+    .bottomNav {
+      flex-direction: column;
+      padding: 10px;
+    }
+  
+    .allCounter{
+      font-size: 24px;
+      text-align: center;
+    }
+  
+    .allCounter > span{
+      font-size: 24px;
+    }
+  
+    .categories{
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .category__block{
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+  
+    .category__title{
+      font-size: 18px;
+      max-width: 100%;
+      text-align: center;
+    }
+  
+    .content__queue{
+      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+  
+    .queue__state{
+      flex-direction: column;
+      padding: 10px;
+    }
+  
+    .queue__state__title{
+      margin-bottom: 10px;
+    }
+  
+    .table {
+      font-size: 14px;
+    }
+  
+    .accept__button {
+      font-size: 16px;
+      width: 100%;
+      margin: 0;
+    }
+  
+    .svgBTN{
+      width: 40px;
+    }
+  
+    .time{
+      width: 100%;
+    }
+  
+    .optionsBlock {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+
+
+  /* Delete modal; */
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.3s;
+  }
+  
+  .modalContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    max-width: 685px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .modal p {
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .modalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  
+.modalSpan{
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(231, 81, 81, 0.82);
+}
+
+.cancelBTN{
+  width: 100%;
+  max-width: 240px;
+  height: 50px;
+  border: 1px solid rgba(57, 147, 195, 1);
+  color: rgba(57, 147, 195, 1);
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  transition-duration: 0.3s;
+}
+
+.cancelBTN:hover{
+  background-color: rgba(57, 147, 195, 0.123);
+}
+
+.deleteBTN{
+  width: 100%;
+  max-width: 240px;
+  height: 50px;
+  border: 1px solid rgba(231, 81, 81, 0.82);
+  color: rgba(231, 81, 81, 0.82);
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  transition-duration: 0.3s;
+}
+
+.deleteBTN:hover{
+  background-color: rgba(231, 81, 81, 0.121);
+}

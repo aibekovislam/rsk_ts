@@ -38,8 +38,17 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             const res = await axios.get(`${BASE_URL}/customers/`);
             dispatch({
                 type: ACTIONS.queues,
-                payload: res.data?.results
+                payload: res.data.results
             })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function deleteQueue(id:number) {
+        try {
+            const res = await axios.delete(`${BASE_URL}/customers/${id}`);
+            getCustomers()
         } catch (error) {
             console.log(error)
         }
@@ -47,7 +56,8 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const value = {
         getCustomers,
-        queues: state.queues
+        queues: state.queues,
+        deleteQueue
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
