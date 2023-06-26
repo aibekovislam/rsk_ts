@@ -3,6 +3,8 @@ import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1 (1).svg";
 import { ReactComponent as EyeOffSVG } from "../images/eye-off-outline.svg";
 import { ReactComponent as EyeSVG } from "../images/eye-outline.svg";
+import { useAuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 import styles from '../static/queueAdminAuth.module.scss';
 
 export const QueueAuthAdmin: React.FC = () => {
@@ -10,15 +12,34 @@ export const QueueAuthAdmin: React.FC = () => {
   const [inputType, setInputType] = React.useState("password");
   const [labelEmailState, setLabelEmailState] = React.useState(false);
   const [labelPasswordState, setLabelPasswordState] = React.useState(false);
+
+  const [isLogin, setIsLogin] = React.useState(true);
+  const { register, login, user } = useAuthContext();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    if (isLogin) {
+      login(data);
+    } else {
+      register(data);
+    }
+  };
+
+  if (user) {
+    return <Navigate replace to="/" />;
+  }
+
   return (
     <div className={styles.auth_block}>
       <div className={styles.auth_block__img}>
         <img src={require("../images/Авторизация_background.jpg")} />
+
         <div className={styles.auth_block__form}>
           <div className={styles.auth_block__form__child}>
             <LogoSVG className={styles.logo} />
             <div className={styles.logo__title}>Система электронных очередей</div>
-            <form className={styles.auth__form}>
+            <form className={styles.auth__form} onSubmit={handleSubmit}>
               <input
                 type="text"
                 className={styles.auth__form__email}

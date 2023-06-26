@@ -12,6 +12,7 @@ export const MainRoutes = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Homepage />} />
         <Route path="/client" element={<ClientPage />} />
+        <Route path="/queue" element={<QueueAdminPage/>}></Route>
       </Route>
       <Route path="/auth" element={<QueueAuthAdmin />}></Route>
     </Routes>

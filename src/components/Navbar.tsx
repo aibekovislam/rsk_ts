@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Navbar.module.scss";
 import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1.svg";
@@ -8,11 +8,13 @@ import { ReactComponent as Icon3SVG } from "../images/Group (3).svg";
 import { ReactComponent as Icon4SVG } from "../images/Vector (3).svg";
 import { ReactComponent as AvatarSVG } from "../images/изображение 5.svg";
 import { ReactComponent as SwitchoffSVG } from "../images/Switch (1).svg";
-import { ReactComponent as SwitchonSVG } from "../images/Switch.svg";
+import { ReactComponent as SwitchonSVG } from "../images/Switch (2).svg";
+import { ReactComponent as ChatSVG } from "../images/chatbubble-ellipses-outline (1).svg";
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  // const user: Iuser[] = [{}];
+
+  const [ switchState, setSwitchState ] = React.useState(false);
 
   interface Ipage {
     icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
@@ -29,7 +31,7 @@ const Navbar: React.FC = () => {
     {
       icon: <Icon2SVG />,
       title: "Список очередей",
-      link: "/",
+      link: "/queue",
     },
     {
       icon: <Icon3SVG />,
@@ -59,12 +61,25 @@ const Navbar: React.FC = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.header_nav}>
-          <div className={styles.header_logo}>
-            <LogoSVG />
+          <div className={styles.header__nav__start}>
+            <div className={styles.header_logo}>
+              <LogoSVG />
+            </div>
+            <div className={styles.timeBreak}>
+              Перерыв
+              { switchState ? (
+                <SwitchoffSVG className={styles.switch} onClick={(e) => setSwitchState(!switchState)}  />
+              ) : (
+                <SwitchonSVG className={styles.switch} onClick={(e) => setSwitchState(!switchState)}  />
+              ) }
+            </div>
+            <div className={styles.chat}>
+              Рабочий чат
+              <ChatSVG className={styles.chatSVG} />
+            </div>
           </div>
-          <div className={styles.window_number}>Oкно 5</div>
           <div className={styles.user}>
-            <div className={styles.user_name}>Анарбекова А.Т</div>
+            <div className={styles.user_name}>Окно №5</div>
             <div className={styles.user_photo}>
               <AvatarSVG />
               {/*photo_URL*/}
