@@ -77,12 +77,12 @@ const Navbar: React.FC = () => {
           {pages.map((page) => (
             <ul className={styles.nav_items} key={page.title}>
               <li className={styles.nav_link_item}>
-                <a href={page.link}>
+                <Link to={page.link}>
                   <button className={styles.nav_link_item}>
                     {page.icon}
                     {page.title}
                   </button>
-                </a>
+                </Link>
               </li>
             </ul>
           ))}

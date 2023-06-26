@@ -8,7 +8,7 @@
 .wrapper_left {
   width: 750px;
   height: 831px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.937);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
   padding: 53px;
   color: #333030;
   border-radius: 5px;
@@ -236,4 +236,82 @@ span {
 
   border: 1px solid #3993c3;
   border-radius: 8px;
+}
+
+// modal
+
+.wrapper_modal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+  width: 100vw;
+  height: 100vw;
+
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(51, 48, 48, 1);
+  gap: 40px;
+  margin-top: 40px;
+  width: 680px;
+  height: 350px;
+  border-radius: 8px;
+  margin-top: -50%;
+  background: #fff;
+}
+
+.close {
+  display: flex;
+  justify-content: end;
+  align-self: end;
+  margin-right: 20px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.left_accordion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  width: 200px;
+  height: 45px;
+}
+
+.modal_text {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.right_accordion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  width: 200px;
+  height: 45px;
+}
+
+.btn {
+  width: 270px;
+  height: 54px;
+  background: rgba(57, 147, 195, 1);
+  color: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+  text-align: center;
 }
