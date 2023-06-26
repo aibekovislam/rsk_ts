@@ -63,6 +63,10 @@
   color: inherit;
 }
 
+.nav_link_item > svg {
+  transition: 0.4s;
+}
+
 .nav_link_item:focus,
 .nav_link_item:hover {
   color: #3993c3;
@@ -92,13 +96,15 @@
   height: 25px;
 }
 
+.nav_link_item:hover > svg,
+.nav_link_item:focus > svg {
+    filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
+    brightness(84%) contrast(78%);
+}
+
 .header__nav__start{
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 25px;
-}
-.nav_link_item:hover > svg {
-  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
-    brightness(84%) contrast(78%);
 }

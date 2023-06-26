@@ -24,22 +24,22 @@ const Navbar: React.FC = () => {
 
   const pages: Ipage[] = [
     {
-      icon: <IconSVG/>,
+      icon: <IconSVG />,
       title: "Клиент",
       link: "/client",
     },
     {
-      icon: <Icon2SVG/>,
+      icon: <Icon2SVG />,
       title: "Список очередей",
       link: "/queue",
     },
     {
-      icon: <Icon3SVG/>,
+      icon: <Icon3SVG />,
       title: "Список операций",
       link: "/",
     },
     {
-      icon: <Icon4SVG/>,
+      icon: <Icon4SVG />,
       title: "Рабочий чат",
       link: "/",
     },
@@ -92,13 +92,12 @@ const Navbar: React.FC = () => {
           {pages.map((page) => (
             <ul className={styles.nav_items} key={page.title}>
               <li className={styles.nav_link_item}>
-                <a href={page.link}>
+                <Link to={page.link}>
                   <button className={styles.nav_link_item}>
-                  { page.icon }
-                  {page.title}
-                </button>
-                </a>
-
+                    {page.icon}
+                    {page.title}
+                  </button>
+                </Link>
               </li>
             </ul>
           ))}
