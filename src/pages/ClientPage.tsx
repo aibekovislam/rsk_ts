@@ -8,9 +8,24 @@ import { useNavigate } from "react-router-dom";
 import { TranslateModal } from "../modals/ClientModals/TranslateModal";
 import { useState } from "react";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
-import { ReactComponent as CLoseSVG } from "../images/Vector (4).svg";
+import { ReactComponent as CLoseSVG } from "../images/close btn.svg";
+import Accordion, {
+  IFullname,
+  IPost,
+} from "../modals/ClientModals/Accordion/Accordion";
 
 export const ClientPage: React.FC = () => {
+  const handleSelectPost = (post: IPost) => {
+    console.log("Должность", post);
+    // Другая логика обработки выбранной фирмы
+  };
+  const handleSelectWorker = (worker: IFullname) => {
+    console.log("ФИО", worker);
+  };
+
+  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(true);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -39,7 +54,7 @@ export const ClientPage: React.FC = () => {
           <p className={styles.operation}>Оформить кредит</p>
         </div>
         <div className={styles.data}>
-          <h5>Данные клиетна:</h5>
+          <h5>Данные клиента:</h5>
           <button>
             <ChangeSVG />
           </button>
@@ -77,9 +92,23 @@ export const ClientPage: React.FC = () => {
             </h1>
             <div className={styles.choice}>
               <div className={styles.left_accordion}>
-                Должность {<ArrowSVG />}
+                {isAccordionOpen && (
+                  <>
+                    <Accordion
+                      onSelectPost={handleSelectPost}
+                      onSelectWorker={handleSelectWorker}
+                    />
+                    <ArrowSVG />
+                  </>
+                )}
               </div>
-              <div className={styles.right_accordion}>ФИО {<ArrowSVG />}</div>
+              <div className={styles.right_accordion}>
+                <Accordion
+                  onSelectPost={handleSelectPost}
+                  onSelectWorker={handleSelectWorker}
+                />{" "}
+                {<ArrowSVG />}
+              </div>
             </div>
             <button className={styles.btn}>Перевести</button>
           </div>
