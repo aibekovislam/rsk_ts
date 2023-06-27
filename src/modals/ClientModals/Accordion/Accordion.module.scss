@@ -1,0 +1,36 @@
+.accordionContent p:hover,
+.accordionContent p:focus {
+  color: rgba(1, 116, 177, 1);
+}
+
+.accordionContent p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  width: 200px;
+  height: 45px;
+}
+
+.active {
+  color: rgba(1, 116, 177, 1);
+  transition: 0.2s;
+}
+
+.accordionContent {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.open {
+  opacity: 1;
+  max-height: 500px;
+}
+
+.closed {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
