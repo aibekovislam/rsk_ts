@@ -1,8 +1,5 @@
-import React from 'react';
-import '../static/homepage.css';
+import React from "react";
 
 export const Homepage = () => {
-  return (
-    <div>Hello</div>
-  )
-}
+  return <div>Hello</div>;
+};
