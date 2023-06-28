@@ -4,7 +4,6 @@
 
 .bottomNav{
     display: flex;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
 }
@@ -25,6 +24,14 @@
     justify-content: space-between;
     align-items: center;
     width: 75%;
+}
+
+.categoryBlock{
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .category__block{
@@ -112,6 +119,15 @@
 
   .counter{
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .counter > p{
+    color: rgba(1, 116, 177, 1);
+    font-weight: 600;
+    font-size: 18px;
   }
 
   .counter > span {
@@ -348,4 +364,8 @@
 
 .deleteBTN:hover{
   background-color: rgba(231, 81, 81, 0.121);
+}
+
+.switch:hover{
+  cursor: grab;
 }

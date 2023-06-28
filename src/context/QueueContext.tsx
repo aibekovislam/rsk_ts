@@ -18,13 +18,16 @@ export interface QueueProps {
 
 const initState = {
     queue: [],
-    oneQueue: null
+    oneQueue: null,
+    rejectedQueue: []
 }
 
 function reducer(state: any, action: any) {
     switch (action.type) {
         case ACTIONS.queues:
-            return { ...state, queues: action.payload }    
+            return { ...state, queues: action.payload }
+        case ACTIONS.rejectedQueue:
+            return { ...state, rejectedQueue: action.payload }    
         default:
             return state;
     }
@@ -54,10 +57,27 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         }
     }
 
+    async function rejectQueue(id:number, newItem: boolean) {
+        try {
+            const res = await axios.get(`${BASE_URL}/customers/${id}`);
+            const res2 = await axios.patch(`${BASE_URL}/customers/${id}/`, { ...res.data, is_served: newItem, queue: 1 });
+            dispatch({
+                type: ACTIONS.rejectedQueue,
+                payload: res2
+            })
+            console.log(res2.data)
+            getCustomers()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const value = {
         getCustomers,
         queues: state.queues,
-        deleteQueue
+        deleteQueue,
+        rejectQueue,
+        rejectedQueue: state.rejectedQueue
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
