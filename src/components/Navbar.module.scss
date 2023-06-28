@@ -51,7 +51,6 @@
 }
 
 .nav_link_item {
-  width: 250px;
   height: 50px;
   display: flex;
   justify-content: center;
@@ -74,35 +73,35 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 }
-.timeBreak{
+.timeBreak {
   display: flex;
   align-items: center;
   gap: 10px;
   height: 55px;
 }
 
-.switch{
+.switch {
   cursor: pointer;
 }
 
-.chat{
+.chat {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.chatSVG{
+.chatSVG {
   width: 25px;
   height: 25px;
 }
 
 .nav_link_item:hover > svg,
 .nav_link_item:focus > svg {
-    filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
+  filter: invert(66%) sepia(23%) saturate(5582%) hue-rotate(172deg)
     brightness(84%) contrast(78%);
 }
 
-.header__nav__start{
+.header__nav__start {
   display: flex;
   align-items: center;
   justify-content: space-between;
