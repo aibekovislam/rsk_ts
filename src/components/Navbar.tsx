@@ -24,6 +24,8 @@ const Navbar: React.FC = () => {
     link: string;
   }
 
+  //rgba(248, 248, 248, 1)
+
   const pages: Ipage[] = [
     {
       icon: <IconSVG />,
@@ -33,7 +35,7 @@ const Navbar: React.FC = () => {
     {
       icon: <Icon2SVG />,
       title: "Список очередей",
-      link: "/queue",
+      link: "/operator/queue",
     },
     {
       icon: <Icon3SVG />,

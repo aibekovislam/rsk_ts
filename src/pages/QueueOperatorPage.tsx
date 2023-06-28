@@ -4,9 +4,11 @@ import { ReactComponent as ArrowRightSVG } from '../images/chevron-forward-outli
 import { ReactComponent as SwitchSVG } from '../images/Vector (4).svg';
 import { ReactComponent as TripleDotsSVG } from '../images/Vector (5).svg';
 import { useQueueContext } from '../context/QueueContext';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, rejectQueue, rejectedQueue } = useQueueContext();
+  const { getCustomers, queues, deleteQueue, rejectQueue, rejectedQueue, handleDragEnd } = useQueueContext();
 
   useEffect(() => {
     getCustomers();
@@ -24,16 +26,15 @@ const QueueOperatorPage = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedTicketNumber, setSelectedTicketNumber] = useState('');
 
-  const [ newItem, setNewItem ] = useState(false);
-
+  const [newItem, setNewItem] = useState(false);
 
   interface currentITEMType {
-    id: number,
-    ticket_number: string,
-    queue: string,
-    waiting_time: number,
-    category: string,
-    position: number
+    id: number;
+    ticket_number: string;
+    queue: string;
+    waiting_time: number;
+    category: string;
+    position: number;
   }
 
   const handleOptionsClick = (itemId: any, ticketNumber: any) => {
@@ -63,23 +64,24 @@ const QueueOperatorPage = () => {
 
   const category: categories[] = [
     {
-      circleColor: "rgba(234, 237, 93, 1)",
-      title: "Пенсионер" 
+      circleColor: 'rgba(234, 237, 93, 1)',
+      title: 'Пенсионер',
     },
     {
-      circleColor: "rgba(252, 190, 183, 1)",
-      title: "Беременные" 
+      circleColor: 'rgba(252, 190, 183, 1)',
+      title: 'Беременные',
     },
     {
-      circleColor: "rgba(155, 228, 129, 1)",
-      title: "Ветеран" 
+      circleColor: 'rgba(155, 228, 129, 1)',
+      title: 'Ветеран',
     },
     {
-      circleColor: "rgba(228, 129, 201, 1)",
-      title: "С ограниченными возможностями" 
+      circleColor: 'rgba(228, 129, 201, 1)',
+      title: 'С ограниченными возможностями',
     },
-  ]
+  ];
 
+  console.log(queues);
 
   return (
     <div className={styles.hero}>
@@ -90,12 +92,15 @@ const QueueOperatorPage = () => {
           </div>
         </div>
         <div className={styles.categories}>
-              { category.map((item) => (
-                <div className={styles.category__block}>
-                  <div className={styles.circle_category} style={{ backgroundColor: item.circleColor }} ></div>
-                  <div className={styles.category__title}>{ item.title }</div>
-                </div>
-              )) } 
+          {category.map((item) => (
+            <div key={item.title} className={styles.category__block}>
+              <div
+                className={styles.circle_category}
+                style={{ backgroundColor: item.circleColor }}
+              ></div>
+              <div className={styles.category__title}>{item.title}</div>
+            </div>
+          ))}
         </div>
       </div>
       <div className={styles.content__queue}>
@@ -116,89 +121,101 @@ const QueueOperatorPage = () => {
           }
           className={styles.tableBlock}
         >
-          <table className={`${styles.table}`}>
-            <thead>
-              <tr>
-                <th>Клиент №</th>
-                <th>Вопрос</th>
-                <th>Время ожидания</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {queues?.map((item: any, index: number) => (
-                <tr
-                  key={index}
-                  draggable={true}
-                >
-                  <td className={styles.counter}>
-                    {index + 1}.{' '}
-                    <span
-                      style={
-                        item.category === 'pregnant'
-                          ? { background: 'rgba(252, 190, 183, 1)' }
-                          : item.category === 'veteran'
-                          ? { background: 'rgba(155, 228, 129, 1)' }
-                          : item.category === 'pensioner'
-                          ? { background: 'rgba(234, 237, 93, 1)' }
-                          : item.category === 'disabled person'
-                          ? { background: 'rgba(228, 129, 201, 1)' }
-                          : undefined
-                      }
-                    ></span>{' '}
-                    <p>{item.ticket_number}</p>
-                  </td>
-                  <td>{item.queue}</td>
-                  <td className={styles.time}>{convertTime(item.waiting_time)}</td>
-                  <td className={styles.buttonTD}>
-                    <button className={styles.accept__button}>Принять</button>
-                  </td>
-                  <td className={styles.svgBTN}>
-                    <SwitchSVG className={styles.switch} />
-                  </td>
-                  <td
-                    className={styles.svgBTN}
-                    onClick={() => handleOptionsClick(item.id, item.ticket_number)}
-                  >
-                    <TripleDotsSVG className={styles.tripleDots} />
-                  </td>
-                  {showOptions && item.id === selectedItemId && (
-                    <div className={styles.optionsBlock}>
-                      <button>Посмотреть талон</button>
-                      <button>Перенести в другую очередь</button>
-                      <button
-                        style={{
-                          color: 'red',
-                          backgroundColor: '#f5f5f5',
-                          borderRadius: '5px',
-                        }}
-                        onClick={() => {
-                          setShowModal(true);
-                          setShowOptions(false);
-                        }}
-                      >
-                        Удалить
-                      </button>
-                      <button
-                        style={{
-                          color: 'red',
-                          backgroundColor: '#f5f5f5',
-                          borderRadius: '5px',
-                        }}
-                        onClick={() => {
-                          setNewItem(false);
-                          rejectQueue(item.id, newItem);
-                          // console.log(rejectedQueue)
-                        }}
-                      >
-                        Отклонить
-                      </button>
-                    </div>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className={styles.table}>
+            <div className={styles.tableItems}>
+              <div className={styles.tableItem__tbody}>
+                <div className={styles.tableItem__thead}>
+                  <div className={styles.thead__number}>Клиент №</div>
+                  <div className={styles.thead__question}>Вопрос</div>
+                  <div className={styles.thead__time}>Время ожидания</div>
+                </div>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable droppableId="queue-list">
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {queues?.map((item: any, index: number) => (
+                          <Draggable key={item.id.toString()} draggableId={item.id.toString()} index={index}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                className={`${styles.tbody__item__talon} ${snapshot.isDragging ? styles.dragging : ''}`}
+                                style={index % 2 === 1 ? { background: 'rgba(248, 248, 248, 1)' } : undefined}
+                              >
+                                <div className={styles.tbody__talon}>
+                                  <div className={styles.tbody__number}>{index + 1}.</div>
+                                  <span
+                                    style={
+                                      item.category === 'pregnant'
+                                        ? { background: 'rgba(252, 190, 183, 1)' }
+                                        : item.category === 'veteran'
+                                        ? { background: 'rgba(155, 228, 129, 1)' }
+                                        : item.category === 'pensioner'
+                                        ? { background: 'rgba(234, 237, 93, 1)' }
+                                        : item.category === 'disabled person'
+                                        ? { background: 'rgba(228, 129, 201, 1)' }
+                                        : undefined
+                                    }
+                                  ></span>{' '}
+                                  {item.ticket_number}
+                                </div>
+                                <div className={styles.tbody__question}>{item.queue}</div>
+                                <div className={styles.tbody__time}>{convertTime(item.waiting_time)}</div>
+                                <div className={styles.tbody__buttons}>
+                                  <button>Принять</button>
+                                    {provided.dragHandleProps && (
+                                      <div {...provided.dragHandleProps} className={styles.switch}>
+                                        <SwitchSVG className={styles.switchIcon} />
+                                      </div>
+                                    )}
+                                  <TripleDotsSVG
+                                    className={styles.tripledots}
+                                    onClick={() => handleOptionsClick(item.id, item.ticket_number)}
+                                  />
+                                </div>
+                                {showOptions && item.id === selectedItemId && (
+                                  <div className={styles.optionsBlock}>
+                                    <button>Посмотреть талон</button>
+                                    <button>Перенести в другую очередь</button>
+                                    <button
+                                      style={{
+                                        color: 'red',
+                                        backgroundColor: '#f5f5f5',
+                                        borderRadius: '5px',
+                                      }}
+                                      onClick={() => {
+                                        setShowModal(true);
+                                        setShowOptions(false);
+                                      }}
+                                    >
+                                      Удалить
+                                    </button>
+                                    <button
+                                      style={{
+                                        color: 'red',
+                                        backgroundColor: '#f5f5f5',
+                                        borderRadius: '5px',
+                                      }}
+                                      onClick={() => {
+                                        setNewItem(false);
+                                      }}
+                                    >
+                                      Отклонить
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              </div>
+            </div>
+          </div>
         </div>
         <div onClick={(e) => setContent2(!content2)} className={styles.queue__state}>
           <div className={styles.queue__state__title}>

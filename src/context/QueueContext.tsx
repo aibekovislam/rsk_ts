@@ -22,6 +22,8 @@ const initState = {
     rejectedQueue: []
 }
 
+let newQueues = [];
+
 function reducer(state: any, action: any) {
     switch (action.type) {
         case ACTIONS.queues:
@@ -72,12 +74,26 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         }
     }
 
+    const handleDragEnd = (result: any) => {
+        if (!result.destination) {
+          return;
+        }
+    
+        const { source, destination } = result;
+        newQueues = [...state.queues];
+        const [movedItem] = newQueues.splice(source.index, 1);
+        newQueues.splice(destination.index, 0, movedItem);
+    
+        dispatch({ type: ACTIONS.queues, payload: newQueues });
+      };    
+
     const value = {
         getCustomers,
         queues: state.queues,
         deleteQueue,
         rejectQueue,
-        rejectedQueue: state.rejectedQueue
+        rejectedQueue: state.rejectedQueue,
+        handleDragEnd
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
