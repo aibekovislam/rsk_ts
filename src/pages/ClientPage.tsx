@@ -5,14 +5,14 @@ import { ReactComponent as ClockSVG } from "../images/pepicons-print_clock.svg";
 import { ReactComponent as ChangeSVG } from "../images/Group (7).svg";
 import { ReactComponent as PrintSCG } from "../images/prime_print.svg";
 import { useNavigate } from "react-router-dom";
-import { TranslateModal } from "../modals/ClientModals/TranslateModal";
+import { TranslateModal } from "../components/modals/clientModals/TranslateModal";
 import { useState } from "react";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
 import { ReactComponent as CLoseSVG } from "../images/close btn.svg";
 import Accordion, {
   IFullname,
   IPost,
-} from "../modals/ClientModals/Accordion/Accordion";
+} from "../components/modals/accordion/Accordion";
 
 export const ClientPage: React.FC = () => {
   const handleSelectPost = (post: IPost) => {

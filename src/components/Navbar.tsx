@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
     {
       icon: <ChartSVG />,
       title: "Статистика",
-      link: "/operators_chart",
+      link: "/operator_stat",
     },
   ];
 
