@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../static/style.scss";
 import styles from "./Client.module.scss";
 import { ReactComponent as ClockSVG } from "../images/pepicons-print_clock.svg";
@@ -9,12 +9,32 @@ import { TranslateModal } from "../components/modals/clientModals/TranslateModal
 import { useState } from "react";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
 import { ReactComponent as CLoseSVG } from "../images/close btn.svg";
+import moment from 'moment';
+import 'moment-timezone';
 import Accordion, {
   IFullname,
   IPost,
 } from "../components/modals/accordion/Accordion";
+import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
+
+  const { getCustomers, queue, operatorEndServed } = useQueueContext();
+  const [ queueLoading, setQueueLoading ] = useState(true);
+  const [ queuePage, setQueuePage ] = useState();
+
+  useEffect(() => {
+    getCustomers();
+  }, []);
+
+  useEffect(() => {
+    if(queue) {
+      setQueuePage(queue)
+    }
+  }, [queue])
+
+  console.log(queue)
+
   const handleSelectPost = (post: IPost) => {
     console.log("Должность", post);
     // Другая логика обработки выбранной фирмы
@@ -38,9 +58,34 @@ export const ClientPage: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const handlePrint = () => {
+    window.print();
+  }
+
   const handleNavigation = () => {
     navigate("/auth");
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setQueueLoading(true);
+        await getCustomers();
+        setQueueLoading(false);
+      } catch (error) {
+        console.log(error);
+        setQueueLoading(false); 
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(queue);
+
+  if (queueLoading) {
+    return <div>Loading...</div>; // Или отобразите спиннер загрузки или другой индикатор
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -50,8 +95,8 @@ export const ClientPage: React.FC = () => {
           20:10
         </div>
         <div className={styles.info}>
-          <h1 className={styles.client_number}>Б201</h1>
-          <p className={styles.operation}>Оформить кредит</p>
+          <h1 className={styles.client_number}>{ queue?.ticket_number }</h1>
+          <p className={styles.operation}>{ queue?.queue }</p>
         </div>
         <div className={styles.data}>
           <h5>Данные клиента:</h5>
@@ -60,13 +105,13 @@ export const ClientPage: React.FC = () => {
           </button>
         </div>
         <div className={styles.client_data}>
-          <p>Джамалбеков</p>
-          <p>Эмиль</p>
-          <p>Садырбаевич</p>
-          <p>ID 421234</p>
+          <p>{ queue?.last_name }</p>
+          <p>{ queue?.first_name }</p>
+          <p>{ queue?.surname }</p>
+          <p>{ queue?.pasport }</p>
           <p>12.06.1956</p>
-          <p>+996 778342178</p>
-          <p>Пенсионер</p>
+          <p>{ queue?.phone_number }</p>
+          <p>{ queue?.category }</p>
         </div>
         <div className={styles.notes}>Заметки</div>
         <div className={styles.btns}>
@@ -74,7 +119,7 @@ export const ClientPage: React.FC = () => {
           <button onClick={openModal} className={styles.translate}>
             Перевести
           </button>
-          <button className={styles.complete}>Завершить</button>
+          <button className={styles.complete} onClick={() => operatorEndServed(queue?.id)} >Завершить</button>
         </div>
       </div>
       <TranslateModal isOpen={isOpen} onClose={closeModal}>
@@ -117,19 +162,19 @@ export const ClientPage: React.FC = () => {
       <div className={styles.wrapper_right}>
         <h1>Талон клиента</h1>
         <div className={styles.ticket}>
-          <h2 className={styles.ticket_number}>Б201</h2>
+          <h2 className={styles.ticket_number}>{ queue.ticket_number }</h2>
           <h4 className={styles.ticket_pin}>
-            ПИН: <p className={styles.pin}>235412</p>
+            ПИН: <p className={styles.pin}>{ queue.pasport }</p>
           </h4>
         </div>
         <div className={styles.ticket_subinfo}>
-          <h4>Юридическое лицо/ Открытие счета</h4>
+          <h4>Юридическое лицо/ { queue?.queue }</h4>
           <p>
-            Талон создан: <span>10.06.2023</span>
+            Талон создан: <span>{ queue?.created_at }</span>
           </p>
         </div>
         <div className={styles.buttons}>
-          <button className={styles.print}>
+          <button className={styles.print} onClick={handlePrint}>
             <PrintSCG /> Распечатать
           </button>
           <button className={styles.edit}>

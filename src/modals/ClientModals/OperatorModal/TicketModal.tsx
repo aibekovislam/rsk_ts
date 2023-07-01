@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BASE_URL } from '../../../utils/const';
+import { BASE_URL } from '../../../utils/consts';
 import styles from '../../../pages/QueueOperatorPage.module.scss';
 import { ReactComponent as TimeSVG } from '../../../images/pepicons-print_clock.svg';
 import { ReactComponent as StreamLineSVG } from '../../../images/streamline_interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing.svg';

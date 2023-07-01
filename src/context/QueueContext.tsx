@@ -1,5 +1,8 @@
 import axios from 'axios';
+import { stat } from 'fs';
 import React, { createContext, PropsWithChildren, useContext, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isConstructorDeclaration } from 'typescript';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
 
@@ -20,7 +23,7 @@ export interface QueueProps {
 const initState = {
     queue: [],
     oneQueue: null,
-    rejectedQueue: []
+    inQueue: []
 }
 
 let newQueues = [];
@@ -29,8 +32,10 @@ function reducer(state: any, action: any) {
     switch (action.type) {
         case ACTIONS.queues:
             return { ...state, queues: action.payload }
-        case ACTIONS.rejectedQueue:
-            return { ...state, rejectedQueue: action.payload }    
+        case ACTIONS.inQueue:
+            return { ...state, inQueue: action.payload }
+        case ACTIONS.queue:
+                return { ...state, queue: action.payload }    
         default:
             return state;
     }
@@ -38,6 +43,8 @@ function reducer(state: any, action: any) {
 
 export const QueueContext = ({ children }: PropsWithChildren) => {
     const [ state, dispatch ] = useReducer(reducer, initState);
+
+    const navigate = useNavigate();
 
     async function getCustomers() {
         try {
@@ -94,9 +101,34 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             const res = await $axios.post(`${BASE_URL}/operator/${id}/start/`);
             dispatch({
                 type: ACTIONS.queue,
-                payload: res
+                payload: res.data
             })
-            console.log(res);
+            console.log("Функция принятия талона успешна!");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const operatorEndServed = async (id: number) => {
+        try {
+            const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_served/`);
+            getCustomers();
+            console.log(res, "Закончено");
+            navigate("/operator/queue");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const operatorInQueue = async () => {
+        try {
+            const res = await $axios.get(`${BASE_URL}/operator/get_customers_in_queue/`);
+            console.log(res)
+            dispatch({
+                type: ACTIONS.inQueue,
+                payload: res.data
+            })
         } catch (error) {
             console.log(error)
         }
@@ -107,11 +139,12 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         getCustomers,
         queues: state.queues,
         deleteQueue,
-        rejectQueue,
-        rejectedQueue: state.rejectedQueue,
         handleDragEnd,
         queue: state.queue,
-        operatorStartServed
+        operatorStartServed,
+        operatorEndServed,
+        operatorInQueue,
+        inQueue: state.inQueue
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>

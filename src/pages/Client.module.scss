@@ -22,6 +22,16 @@
   gap: 10px;
 }
 
+@media print {
+  .print-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    /* Другие стили для печати, если необходимо */
+  }
+}
+
 .info {
   display: flex;
   justify-content: space-between;
