@@ -1,5 +1,6 @@
-export const BASE_URL = "http://44.204.176.189";
+export const BASE_URL = "http://35.184.55.194";
 
 export const ACTIONS = {
-    queues: "queues"
+    queues: "queues",
+    rejectedQueue: "rejectedQueue"
 }
