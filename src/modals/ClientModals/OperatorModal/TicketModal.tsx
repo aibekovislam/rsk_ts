@@ -20,6 +20,8 @@ const TicketModal: React.FC<{ ticketId: any; closeModal: () => void }> = ({ tick
 
   const [ editDataTicket, setEditDataTicket ] = useState(false);
 
+  console.log(ticketInfo)
+
   useEffect(() => {
     const fetchTicketInfo = async () => {
       try {

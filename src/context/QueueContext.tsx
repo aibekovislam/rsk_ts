@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { createContext, PropsWithChildren, useContext, useReducer } from 'react';
+import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
 
 interface QueueTypes {
@@ -88,13 +89,29 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
       };
 
 
+    const operatorStartServed = async (id: number) => {
+        try {
+            const res = await $axios.post(`${BASE_URL}/operator/${id}/start/`);
+            dispatch({
+                type: ACTIONS.queue,
+                payload: res
+            })
+            console.log(res);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     const value = {
         getCustomers,
         queues: state.queues,
         deleteQueue,
         rejectQueue,
         rejectedQueue: state.rejectedQueue,
-        handleDragEnd
+        handleDragEnd,
+        queue: state.queue,
+        operatorStartServed
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>

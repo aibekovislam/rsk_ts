@@ -9,7 +9,7 @@ import TicketModal from '../modals/ClientModals/OperatorModal/TicketModal';
 
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, handleDragEnd } = useQueueContext();
+  const { getCustomers, queues, deleteQueue, handleDragEnd, operatorStartServed } = useQueueContext();
   
 
   useEffect(() => {
@@ -32,15 +32,6 @@ const QueueOperatorPage = () => {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
 
   const [newItem, setNewItem] = useState(false);
-
-  interface currentITEMType {
-    id: number;
-    ticket_number: string;
-    queue: string;
-    waiting_time: number;
-    category: string;
-    position: number;
-  }
 
   const handleOptionsClick = (itemId: any, ticketNumber: any) => {
     setSelectedItemId(itemId);
@@ -177,7 +168,7 @@ const QueueOperatorPage = () => {
                                 <div className={styles.tbody__question}>{item.queue}</div>
                                 <div className={styles.tbody__time}>{convertTime(item.waiting_time)}</div>
                                 <div className={styles.tbody__buttons}>
-                                  <button>Принять</button>
+                                  <button onClick={() => operatorStartServed(item.id)} >Принять</button>
                                     {provided.dragHandleProps && (
                                       <div {...provided.dragHandleProps} className={styles.switch}>
                                         <SwitchSVG className={styles.switchIcon} />
