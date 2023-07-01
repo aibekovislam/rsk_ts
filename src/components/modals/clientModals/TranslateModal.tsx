@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import styles from "./TranslateModal.module.scss";
-import { ReactComponent as ArrowSVG } from "../../images/fluent_ios-arrow-ltr-24-regular.svg";
-import { ReactComponent as CLoseSVG } from "../../images/Vector (4).svg";
 
 interface ModalProps {
   children: React.ReactNode;

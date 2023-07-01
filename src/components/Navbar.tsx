@@ -10,17 +10,21 @@ import { ReactComponent as AvatarSVG } from "../images/изображение 5.
 import { ReactComponent as SwitchoffSVG } from "../images/Switch (1).svg";
 import { ReactComponent as SwitchonSVG } from "../images/Switch (2).svg";
 import { ReactComponent as ChatSVG } from "../images/chatbubble-ellipses-outline (1).svg";
+import { ReactComponent as ChartSVG } from "../images/chart.svg";
+import { ReactComponent as RecordSVG } from "../images/records.svg";
+
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-
-  const [ switchState, setSwitchState ] = React.useState(false);
+  const [switchState, setSwitchState] = React.useState(false);
 
   interface Ipage {
     icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
     title: string;
     link: string;
   }
+
+  //rgba(248, 248, 248, 1)
 
   const pages: Ipage[] = [
     {
@@ -31,7 +35,7 @@ const Navbar: React.FC = () => {
     {
       icon: <Icon2SVG />,
       title: "Список очередей",
-      link: "/queue",
+      link: "/operator/queue",
     },
     {
       icon: <Icon3SVG />,
@@ -39,9 +43,14 @@ const Navbar: React.FC = () => {
       link: "/",
     },
     {
-      icon: <Icon4SVG />,
-      title: "Рабочий чат",
+      icon: <RecordSVG />,
+      title: "Записи",
       link: "/",
+    },
+    {
+      icon: <ChartSVG />,
+      title: "Статистика",
+      link: "/operator_stat",
     },
   ];
 
@@ -67,11 +76,17 @@ const Navbar: React.FC = () => {
             </div>
             <div className={styles.timeBreak}>
               Перерыв
-              { switchState ? (
-                <SwitchoffSVG className={styles.switch} onClick={(e) => setSwitchState(!switchState)}  />
+              {switchState ? (
+                <SwitchoffSVG
+                  className={styles.switch}
+                  onClick={(e) => setSwitchState(!switchState)}
+                />
               ) : (
-                <SwitchonSVG className={styles.switch} onClick={(e) => setSwitchState(!switchState)}  />
-              ) }
+                <SwitchonSVG
+                  className={styles.switch}
+                  onClick={(e) => setSwitchState(!switchState)}
+                />
+              )}
             </div>
             <div className={styles.chat}>
               Рабочий чат

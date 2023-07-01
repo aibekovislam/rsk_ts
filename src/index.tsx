@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { QueueContext } from './contexts/QueueContext';
+import { QueueContext } from './context/QueueContext';
 import AuthContext from "./context/AuthContext";
 
 
