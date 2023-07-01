@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { BASE_URL } from "../utils/const";
+import { BASE_URL } from "../utils/consts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import $axios from "../utils/axios";
@@ -75,7 +75,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
       );
       localStorage.setItem("tokens", JSON.stringify(tokens));
 
-      const { data } = await $axios.get(`${BASE_URL}/user/profile/`);
+      const { data } = await $axios.get(`${BASE_URL}/profile/`);
 
       dispatch({
         type: ACTIONS.user,

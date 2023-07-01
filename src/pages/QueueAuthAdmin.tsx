@@ -15,7 +15,7 @@ export const QueueAuthAdmin: React.FC = () => {
   const [labelPasswordState, setLabelPasswordState] = React.useState(false);
 
   const [isLogin, setIsLogin] = React.useState(true);
-  const { register, login, user } = useAuthContext();
+  const { login, user } = useAuthContext();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,7 +24,7 @@ export const QueueAuthAdmin: React.FC = () => {
     if (isLogin) {
       login(data);
     } else {
-      register(data);
+      alert("Неверные данные");
     }
   };
 
@@ -46,26 +46,8 @@ export const QueueAuthAdmin: React.FC = () => {
             <form className={styles.auth__form} onSubmit={handleSubmit}>
               <input
                 type="text"
-                className={styles.auth__form__email}
-                name="username"
-                onChange={(e) => {
-                  e.target.value !== ""
-                    ? setLabelEmailState(true)
-                    : setLabelEmailState(false);
-                }}
-              />
-              <label
-                className={`${styles.auth__form__email__placeholder} ${
-                  labelEmailState ? `${styles.active__email}` : ""
-                }`}
-              >
-                Введите имя пользователя
-              </label>
-              {/* {!isLogin ? (<></>):null} */}
-              <input
-                type="text"
                 className={styles.auth__form__email__real}
-                name="email"
+                name="username"
                 onChange={(e) => {
                   e.target.value !== ""
                     ? setEmailState(true)
@@ -77,7 +59,7 @@ export const QueueAuthAdmin: React.FC = () => {
                   emailState ? `${styles.active__email__real}` : ""
                 }`}
               >
-                Введите электронный адрес
+                Введите имя
               </label>
 
               <input
@@ -115,21 +97,12 @@ export const QueueAuthAdmin: React.FC = () => {
                   }}
                 />
               )}
-              <div className={styles.block__of__a}>
-                <a
-                  href="#"
-                  className={styles.forgot__password__second}
-                  onClick={(e) => setIsLogin(!isLogin)}
-                >
-                  {isLogin ? "Зарегистрироваться" : "Уже есть аккаунт?"}
-                </a>
-                <a href="#" className={styles.forgot__password}>
-                  Забыли пароль?
-                </a>
-              </div>
-              <button className={styles.auth__form__btn}>
-                {isLogin ? "Войти" : "Регистрация"}
-              </button>
+
+              <a href="#" className={styles.forgot__password}>
+                Забыли пароль?
+              </a>
+
+              <button className={styles.auth__form__btn}>Войти</button>
             </form>
           </div>
         </div>
@@ -165,7 +138,7 @@ export const QueueAuthAdmin: React.FC = () => {
 //     const userData: UserData = {
 //       name,
 //       email,
-//       Другие поля пользователя
+//       // Другие поля пользователя
 //     };
 
 //     try {
