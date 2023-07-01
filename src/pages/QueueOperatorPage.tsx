@@ -5,6 +5,7 @@ import { ReactComponent as SwitchSVG } from '../images/Vector (4).svg';
 import { ReactComponent as TripleDotsSVG } from '../images/Vector (5).svg';
 import { useQueueContext } from '../context/QueueContext';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import TicketModal from '../modals/ClientModals/OperatorModal/TicketModal';
 
 
 const QueueOperatorPage = () => {
@@ -26,6 +27,9 @@ const QueueOperatorPage = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedTicketNumber, setSelectedTicketNumber] = useState('');
 
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
+
   const [newItem, setNewItem] = useState(false);
 
   interface currentITEMType {
@@ -42,6 +46,16 @@ const QueueOperatorPage = () => {
     setSelectedTicketNumber(ticketNumber);
     setShowOptions(!showOptions);
     setShowTable(!showTable);
+  };
+
+  const handleTicketModalOpen = (ticketId: any) => {
+    setSelectedTicketId(ticketId);
+    setShowTicketModal(true);
+  };
+
+  const handleTicketModalClose = () => {
+    setSelectedTicketId(null);
+    setShowTicketModal(false);
   };
 
   const handleDeleteConfirm = () => {
@@ -81,7 +95,6 @@ const QueueOperatorPage = () => {
     },
   ];
 
-  console.log(queues);
 
   return (
     <div className={styles.hero}>
@@ -175,7 +188,10 @@ const QueueOperatorPage = () => {
                                 </div>
                                 {showOptions && item.id === selectedItemId && (
                                   <div className={styles.optionsBlock}>
-                                    <button>Посмотреть талон</button>
+                                    <button onClick={(e) => {
+                                      handleTicketModalOpen(item.id)
+                                      setShowOptions(false)
+                                      }} >Посмотреть талон</button>
                                     <button>Перенести в другую очередь</button>
                                     <button
                                       style={{
@@ -263,6 +279,9 @@ const QueueOperatorPage = () => {
             </div>
           </div>
         </div>
+      )}
+      {showTicketModal && (
+        <TicketModal ticketId={selectedTicketId} />
       )}
     </div>
   );

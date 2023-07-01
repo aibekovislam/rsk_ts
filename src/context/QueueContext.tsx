@@ -73,7 +73,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             console.log(error)
         }
     }
-
+ 
     const handleDragEnd = (result: any) => {
         if (!result.destination) {
           return;
@@ -85,7 +85,8 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         newQueues.splice(destination.index, 0, movedItem);
     
         dispatch({ type: ACTIONS.queues, payload: newQueues });
-      };    
+      };
+
 
     const value = {
         getCustomers,
