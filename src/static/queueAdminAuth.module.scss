@@ -53,19 +53,6 @@
   margin-top: 25px;
 }
 
-.auth__form__email {
-  border: 1px solid rgba(136, 126, 126, 1);
-  color: rgba(99, 92, 92, 1);
-  background: transparent;
-  border-radius: 5px;
-  padding: 15px 10px 0px 10px;
-  z-index: 2;
-  width: 330px;
-  height: 52px;
-  font-size: 16px;
-  font-family: "Montserrat", sans-serif;
-}
-
 .auth__form__email__real {
   border: 1px solid rgba(136, 126, 126, 1);
   color: rgba(99, 92, 92, 1);
@@ -84,56 +71,27 @@
   border: none;
 }
 
-.auth__form__email:focus {
-  outline: solid rgba(57, 147, 195, 1);
-  border: none;
-}
-
-.auth__form__email:focus ~ .auth__form__email__placeholder {
-  top: 39%;
-  font-size: 13px;
-  color: rgba(57, 147, 195, 1);
-}
-
 .auth__form__email__real:focus ~ .auth__form__email__placeholder__real {
-  top: 50%;
+  top: 43.5%;
   font-size: 13px;
   color: rgba(57, 147, 195, 1);
-}
-
-.auth__form__email__placeholder {
-  color: rgba(166, 166, 166, 1);
-  text-align: left;
-  position: absolute;
-  top: 40.5%;
-  left: 25%;
-  z-index: 1;
-  transition-duration: 0.3s;
-  font-size: 16px;
 }
 
 .auth__form__email__placeholder__real {
   color: rgba(166, 166, 166, 1);
   text-align: left;
   position: absolute;
-  top: 51%;
+  top: 45.5%;
   left: 25%;
   z-index: 1;
   transition-duration: 0.3s;
   font-size: 16px;
 }
 
-.active__email {
-  position: absolute;
-  font-size: 13px;
-  top: 39%;
-  color: rgba(57, 147, 195, 1);
-}
-
 .active__email__real {
   position: absolute;
   font-size: 13px;
-  top: 50%;
+  top: 43.5%;
   color: rgba(57, 147, 195, 1);
 }
 
@@ -158,7 +116,7 @@
   color: rgba(166, 166, 166, 1);
   text-align: left;
   position: absolute;
-  top: 62%;
+  top: 57.5%;
   left: 25%;
   z-index: 1;
   transition-duration: 0.3s;
@@ -170,7 +128,7 @@
 }
 
 .auth__form__password:focus ~ .auth__form__password__placeholder {
-  top: 60.5%;
+  top: 55.5%;
   font-size: 13px;
   color: rgba(57, 147, 195, 1);
 }
@@ -178,13 +136,13 @@
 .active__password {
   position: absolute;
   font-size: 13px;
-  top: 60.5%;
+  top: 55.5%;
   color: rgba(57, 147, 195, 1);
 }
 
 .eye {
   position: absolute;
-  top: 61%;
+  top: 56.5%;
   right: 0;
   left: 69%;
   width: 38px;
@@ -209,25 +167,7 @@
   cursor: pointer;
 }
 
-.forgot__password__second {
-  color: rgba(57, 147, 195, 1);
-  width: 100%;
-  display: flex;
-  // justify-content: flex-end;
-  cursor: pointer;
-}
-
-.block__of__a {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
 .forgot__password:hover {
-  text-decoration: underline;
-}
-
-.forgot__password__second:hover {
   text-decoration: underline;
 }
 
