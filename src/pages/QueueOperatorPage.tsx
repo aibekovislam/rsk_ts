@@ -9,7 +9,8 @@ import TicketModal from '../modals/ClientModals/OperatorModal/TicketModal';
 
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, rejectQueue, rejectedQueue, handleDragEnd } = useQueueContext();
+  const { getCustomers, queues, deleteQueue, handleDragEnd } = useQueueContext();
+  
 
   useEffect(() => {
     getCustomers();
@@ -53,10 +54,11 @@ const QueueOperatorPage = () => {
     setShowTicketModal(true);
   };
 
-  const handleTicketModalClose = () => {
+  const closeModal = () => {
     setSelectedTicketId(null);
     setShowTicketModal(false);
   };
+
 
   const handleDeleteConfirm = () => {
     if (selectedItemId) {
@@ -281,7 +283,7 @@ const QueueOperatorPage = () => {
         </div>
       )}
       {showTicketModal && (
-        <TicketModal ticketId={selectedTicketId} />
+        <TicketModal ticketId={selectedTicketId} closeModal={closeModal}/>
       )}
     </div>
   );
