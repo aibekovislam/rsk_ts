@@ -4,8 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import { Homepage } from "../pages/Homepage";
 import { QueueAuthAdmin } from "../pages/QueueAuthAdmin";
 import ClientPage from "../pages/ClientPage";
-import OperatorChart from "../pages/OperatorChart";
-import QueueOperatorPage from "../pages/QueueOperatorPage";
+import Statistics from "../pages/Statistics";
 
 export const MainRoutes = () => {
   return (
@@ -13,8 +12,8 @@ export const MainRoutes = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Homepage />} />
         <Route path="/client" element={<ClientPage />} />
-        <Route path="/operator/queue" element={<QueueOperatorPage />}></Route>
-        <Route path="/operators_chart" element={<OperatorChart />} />
+        <Route path="/queue" element={<QueueAdminPage />}></Route>
+        <Route path="/operator_stat" element={<Statistics />} />
       </Route>
       <Route path="/auth" element={<QueueAuthAdmin />}></Route>
     </Routes>
