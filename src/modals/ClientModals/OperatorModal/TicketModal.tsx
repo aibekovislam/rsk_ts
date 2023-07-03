@@ -3,7 +3,7 @@ import { BASE_URL } from '../../../utils/consts';
 import styles from '../../../pages/QueueOperatorPage.module.scss';
 import { ReactComponent as TimeSVG } from '../../../images/pepicons-print_clock.svg';
 import { ReactComponent as StreamLineSVG } from '../../../images/streamline_interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing.svg';
-import { ReactComponent as CloseSVG } from '../../../images/Vector (6).svg'
+import { ReactComponent as CloseSVG } from '../../../images/Vector (6).svg';
 
 interface TicketInfo {
   ticket_number: string;

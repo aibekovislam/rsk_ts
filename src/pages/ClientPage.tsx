@@ -19,7 +19,7 @@ import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, editTalon } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
@@ -33,7 +33,6 @@ export const ClientPage: React.FC = () => {
     }
   }, [queue])
 
-  console.log(queue)
 
   const handleSelectPost = (post: IPost) => {
     console.log("Должность", post);
@@ -81,6 +80,8 @@ export const ClientPage: React.FC = () => {
     fetchData();
   }, []);
 
+  const [ changeDATA, setChangeDATA ] = useState(false);
+
   console.log(queue);
 
   if (queueLoading) {
@@ -104,7 +105,21 @@ export const ClientPage: React.FC = () => {
             <ChangeSVG />
           </button>
         </div>
-        <div className={styles.client_data}>
+        { changeDATA ? (
+          <div>
+            <input type="text" name="first_name" value={queue?.first_name} />
+            <input type="text" name="last_name" value={queue?.last_name} />
+            <input type="text" name="surname" value={queue?.surname} />
+            <input type="text" name="pasport" value={queue?.pasport} />
+            <input type="text" name="phone_number" value={queue?.phone_number} />
+            <select name="category" >
+              { queue.map((item: any) => (
+                <option>{ item }</option>
+              )) }
+            </select>
+          </div>
+        ) : (
+          <div className={styles.client_data}>
           <p>{ queue?.last_name }</p>
           <p>{ queue?.first_name }</p>
           <p>{ queue?.surname }</p>
@@ -113,9 +128,10 @@ export const ClientPage: React.FC = () => {
           <p>{ queue?.phone_number }</p>
           <p>{ queue?.category }</p>
         </div>
+        ) }
         <div className={styles.notes}>Заметки</div>
         <div className={styles.btns}>
-          <button className={styles.cancel}>Отменить</button>
+          <button className={styles.cancel} onClick={() => rejectQueue(queue?.id)}>Отменить</button>
           <button onClick={openModal} className={styles.translate}>
             Перевести
           </button>

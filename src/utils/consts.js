@@ -1,9 +1,10 @@
-export const BASE_URL = "http://35.184.55.194";
+export const BASE_URL = "http://54.152.186.39";
 
 export const ACTIONS = {
     queues: "queues",
     rejectedQueue: "rejectedQueue",
     user: "user",
     queue: "queue",
-    inQueue: "inQueue"
+    inQueue: "inQueue",
+    statusOfOperator: "statusOfOperator"
 }
