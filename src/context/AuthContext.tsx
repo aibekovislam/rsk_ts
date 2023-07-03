@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { BASE_URL } from "../utils/consts";
+import { BASE_URL } from "../utils/consts.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import $axios from "../utils/axios";
@@ -88,6 +88,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
 
   function logout(): void {
     localStorage.removeItem("tokens");
+    navigate("/auth")
     dispatch({
       type: ACTIONS.user,
       payload: null,
