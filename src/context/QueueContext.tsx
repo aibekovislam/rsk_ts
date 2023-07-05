@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { stat } from 'fs';
-import React, { createContext, PropsWithChildren, useContext, useReducer } from 'react';
+import React, { createContext, PropsWithChildren, useContext, useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isConstructorDeclaration } from 'typescript';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
+import io from 'socket.io-client';
 
 interface QueueTypes {
     queues: object,
@@ -21,10 +20,11 @@ export interface QueueProps {
 }
 
 const initState = {
-    queue: [],
+    queues: [],
     oneQueue: null,
     inQueue: [],
-    rejectedQueue: []
+    rejectedQueue: [],
+    windows: []
 }
 
 let newQueues = [];
@@ -40,7 +40,9 @@ function reducer(state: any, action: any) {
         case ACTIONS.rejectedQueue:
             return { ...state, rejectedQueue: action.payload }
         case ACTIONS.statusOfOperator:
-            return { ...state, statusOfOperator: action.payload }     
+            return { ...state, statusOfOperator: action.payload }
+        case ACTIONS.windows:
+            return { ...state, windows: action.payload }      
         default:
             return state;
     }
@@ -171,6 +173,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
                 type: ACTIONS.statusOfOperator,
                 payload: res.data
             })
+            localStorage.setItem('status', res.data.status);
             getCustomers()
         } catch (error) {
             console.log(error)
@@ -181,6 +184,18 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         try {
             const res = await $axios.patch(`${BASE_URL}/customers/${id}/`, editedTalon);
             inQueueTALONDetail(id);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getAllWindows = async () => {
+        try {
+            const res = await $axios.get(`${BASE_URL}/branches/window/`);
+            dispatch({
+                type: ACTIONS.windows,
+                payload: res
+            })
         } catch (error) {
             console.log(error)
         }
@@ -203,7 +218,9 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         shiftQueue,
         operatorChangeStatus,
         status: state.statusOfOperator,
-        editTalon
+        editTalon,
+        getAllWindows,
+        windows: state.windows
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>

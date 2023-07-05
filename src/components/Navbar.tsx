@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1.svg";
@@ -17,8 +17,6 @@ import { Link } from "react-router-dom";
 import { useQueueContext } from "../context/QueueContext";
 
 const Navbar: React.FC = () => {
-  const [switchState, setSwitchState] = React.useState(false);
-
   const { operatorChangeStatus, status } = useQueueContext();
 
   interface Ipage {
@@ -27,7 +25,7 @@ const Navbar: React.FC = () => {
     link: string;
   }
 
-  console.log(status);
+  // console.log(status);
 
   //rgba(248, 248, 248, 1)
 
@@ -71,6 +69,11 @@ const Navbar: React.FC = () => {
     },
   ];
 
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
+
+  console.log(status)
+
   return (
     <header>
       <div className={styles.container}>
@@ -80,13 +83,13 @@ const Navbar: React.FC = () => {
               <LogoSVG />
             </div>
               <div className={styles.timeBreak}>
-              { status?.status === "Online" ? "Оператор онлайн" : "Оператор отключен" }
-              {status?.status === "Online" ? (
+              { initialStatus.status == "Online" ? "Онлайн" : "Отключен" }
+              { initialStatus.status == "Online" ? (
                   <SwitchonSVG
                   className={styles.switch}
                   onClick={(e) => {
                     operatorChangeStatus();
-                    setSwitchState(!switchState)
+                    localStorage.setItem('status', 'Online');
                   }}
                 />
               ) : (
@@ -94,7 +97,7 @@ const Navbar: React.FC = () => {
                   className={styles.switch}
                   onClick={(e) => {
                     operatorChangeStatus();
-                    setSwitchState(!switchState)
+                    localStorage.setItem('status', 'Offline');
                   }}
                 />
               )}

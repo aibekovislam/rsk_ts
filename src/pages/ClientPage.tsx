@@ -12,8 +12,7 @@ import { ReactComponent as CLoseSVG } from "../images/close btn.svg";
 import moment from 'moment';
 import 'moment-timezone';
 import Accordion, {
-  IFullname,
-  IPost,
+  IWindow,
 } from "../components/modals/accordion/Accordion";
 import { useQueueContext } from "../context/QueueContext";
 
@@ -34,15 +33,12 @@ export const ClientPage: React.FC = () => {
   }, [queue])
 
 
-  const handleSelectPost = (post: IPost) => {
-    console.log("Должность", post);
+  const handleSelectPost = (post: IWindow) => {
+    console.log("Окно", post);
     // Другая логика обработки выбранной фирмы
   };
-  const handleSelectWorker = (worker: IFullname) => {
-    console.log("ФИО", worker);
-  };
 
-  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -156,8 +152,7 @@ export const ClientPage: React.FC = () => {
                 {isAccordionOpen && (
                   <>
                     <Accordion
-                      onSelectPost={handleSelectPost}
-                      onSelectWorker={handleSelectWorker}
+                      onSelectWindow={handleSelectPost}
                     />
                     <ArrowSVG />
                   </>
@@ -165,8 +160,7 @@ export const ClientPage: React.FC = () => {
               </div>
               <div className={styles.right_accordion}>
                 <Accordion
-                  onSelectPost={handleSelectPost}
-                  onSelectWorker={handleSelectWorker}
+                  onSelectWindow={handleSelectPost}
                 />{" "}
                 {<ArrowSVG />}
               </div>
