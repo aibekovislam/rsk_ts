@@ -5,5 +5,6 @@ export const ACTIONS = {
   categories: "categories",
   oneProduct: "oneProduct",
   pageTotalCount: "pageTotalCount",
+
   user: "user",
 } as const;

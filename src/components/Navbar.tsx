@@ -117,24 +117,6 @@ const Navbar: React.FC = () => {
             </ul>
           ))}
         </div>
-
-        {/* <ul className={styles.nav_items}>
-          <li className={styles.nav_link_item}>
-            <IconSVG />
-            Клиент
-          </li>
-          <li className={styles.nav_link_item}>
-            <Icon2SVG />
-            Список очередей
-          </li>
-          <li className={styles.nav_link_item}>
-            <Icon3SVG /> История операций
-          </li>
-          <li className={styles.nav_link_item}>
-            <Icon4SVG />
-            Рабочий чат
-          </li>
-        </ul> */}
       </div>
     </header>
   );

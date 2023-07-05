@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import styles from './QueueOperatorPage.module.scss';
-import { ReactComponent as ArrowRightSVG } from '../images/chevron-forward-outline (2).svg';
-import { ReactComponent as SwitchSVG } from '../images/Vector (4).svg';
-import { ReactComponent as TripleDotsSVG } from '../images/Vector (5).svg';
-import { useQueueContext } from '../context/QueueContext';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import TicketModal from '../modals/ClientModals/OperatorModal/TicketModal';
-
+import React, { useState, useEffect } from "react";
+import styles from "./QueueOperatorPage.module.scss";
+import { ReactComponent as ArrowRightSVG } from "../images/chevron-forward-outline (2).svg";
+import { ReactComponent as SwitchSVG } from "../images/Vector (4).svg";
+import { ReactComponent as TripleDotsSVG } from "../images/Vector (5).svg";
+import { useQueueContext } from "../context/QueueContext";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import TicketModal from "../modals/ClientModals/OperatorModal/TicketModal";
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, handleDragEnd } = useQueueContext();
-  
+  const { getCustomers, queues, deleteQueue, handleDragEnd } =
+    useQueueContext();
 
   useEffect(() => {
     getCustomers();
@@ -26,7 +25,7 @@ const QueueOperatorPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedTicketNumber, setSelectedTicketNumber] = useState('');
+  const [selectedTicketNumber, setSelectedTicketNumber] = useState("");
 
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
@@ -59,7 +58,6 @@ const QueueOperatorPage = () => {
     setShowTicketModal(false);
   };
 
-
   const handleDeleteConfirm = () => {
     if (selectedItemId) {
       deleteQueue(selectedItemId);
@@ -80,23 +78,22 @@ const QueueOperatorPage = () => {
 
   const category: categories[] = [
     {
-      circleColor: 'rgba(234, 237, 93, 1)',
-      title: 'Пенсионер',
+      circleColor: "rgba(234, 237, 93, 1)",
+      title: "Пенсионер",
     },
     {
-      circleColor: 'rgba(252, 190, 183, 1)',
-      title: 'Беременные',
+      circleColor: "rgba(252, 190, 183, 1)",
+      title: "Беременные",
     },
     {
-      circleColor: 'rgba(155, 228, 129, 1)',
-      title: 'Ветеран',
+      circleColor: "rgba(155, 228, 129, 1)",
+      title: "Ветеран",
     },
     {
-      circleColor: 'rgba(228, 129, 201, 1)',
-      title: 'С ограниченными возможностями',
+      circleColor: "rgba(228, 129, 201, 1)",
+      title: "С ограниченными возможностями",
     },
   ];
-
 
   return (
     <div className={styles.hero}>
@@ -119,10 +116,15 @@ const QueueOperatorPage = () => {
         </div>
       </div>
       <div className={styles.content__queue}>
-        <div onClick={(e) => setContent1(!content1)} className={styles.queue__state}>
+        <div
+          onClick={(e) => setContent1(!content1)}
+          className={styles.queue__state}
+        >
           <div className={styles.queue__state__title}>
             <ArrowRightSVG
-              className={`${styles.arrowRight} ${content1 ? `${styles.reverseArrow}` : ``}`}
+              className={`${styles.arrowRight} ${
+                content1 ? `${styles.reverseArrow}` : ``
+              }`}
             />
             Ожидает
           </div>
@@ -131,8 +133,8 @@ const QueueOperatorPage = () => {
         <div
           style={
             content1
-              ? { maxHeight: '100%', display: 'block' }
-              : { maxHeight: '0px', display: 'none' }
+              ? { maxHeight: "100%", display: "block" }
+              : { maxHeight: "0px", display: "none" }
           }
           className={styles.tableBlock}
         >
@@ -149,57 +151,98 @@ const QueueOperatorPage = () => {
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         {queues?.map((item: any, index: number) => (
-                          <Draggable key={item.id.toString()} draggableId={item.id.toString()} index={index}>
+                          <Draggable
+                            key={item.id.toString()}
+                            draggableId={item.id.toString()}
+                            index={index}
+                          >
                             {(provided, snapshot) => (
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                className={`${styles.tbody__item__talon} ${snapshot.isDragging ? styles.dragging : ''}`}
-                                style={index % 2 === 1 ? { background: 'rgba(248, 248, 248, 1)' } : undefined}
+                                className={`${styles.tbody__item__talon} ${
+                                  snapshot.isDragging ? styles.dragging : ""
+                                }`}
+                                style={
+                                  index % 2 === 1
+                                    ? { background: "rgba(248, 248, 248, 1)" }
+                                    : undefined
+                                }
                               >
                                 <div className={styles.tbody__talon}>
-                                  <div className={styles.tbody__number}>{index + 1}.</div>
+                                  <div className={styles.tbody__number}>
+                                    {index + 1}.
+                                  </div>
                                   <span
                                     style={
-                                      item.category === 'pregnant'
-                                        ? { background: 'rgba(252, 190, 183, 1)' }
-                                        : item.category === 'veteran'
-                                        ? { background: 'rgba(155, 228, 129, 1)' }
-                                        : item.category === 'pensioner'
-                                        ? { background: 'rgba(234, 237, 93, 1)' }
-                                        : item.category === 'disabled person'
-                                        ? { background: 'rgba(228, 129, 201, 1)' }
+                                      item.category === "pregnant"
+                                        ? {
+                                            background:
+                                              "rgba(252, 190, 183, 1)",
+                                          }
+                                        : item.category === "veteran"
+                                        ? {
+                                            background:
+                                              "rgba(155, 228, 129, 1)",
+                                          }
+                                        : item.category === "pensioner"
+                                        ? {
+                                            background: "rgba(234, 237, 93, 1)",
+                                          }
+                                        : item.category === "disabled person"
+                                        ? {
+                                            background:
+                                              "rgba(228, 129, 201, 1)",
+                                          }
                                         : undefined
                                     }
-                                  ></span>{' '}
+                                  ></span>{" "}
                                   {item.ticket_number}
                                 </div>
-                                <div className={styles.tbody__question}>{item.queue}</div>
-                                <div className={styles.tbody__time}>{convertTime(item.waiting_time)}</div>
+                                <div className={styles.tbody__question}>
+                                  {item.queue}
+                                </div>
+                                <div className={styles.tbody__time}>
+                                  {convertTime(item.waiting_time)}
+                                </div>
                                 <div className={styles.tbody__buttons}>
                                   <button>Принять</button>
-                                    {provided.dragHandleProps && (
-                                      <div {...provided.dragHandleProps} className={styles.switch}>
-                                        <SwitchSVG className={styles.switchIcon} />
-                                      </div>
-                                    )}
+                                  {provided.dragHandleProps && (
+                                    <div
+                                      {...provided.dragHandleProps}
+                                      className={styles.switch}
+                                    >
+                                      <SwitchSVG
+                                        className={styles.switchIcon}
+                                      />
+                                    </div>
+                                  )}
                                   <TripleDotsSVG
                                     className={styles.tripledots}
-                                    onClick={() => handleOptionsClick(item.id, item.ticket_number)}
+                                    onClick={() =>
+                                      handleOptionsClick(
+                                        item.id,
+                                        item.ticket_number
+                                      )
+                                    }
                                   />
                                 </div>
                                 {showOptions && item.id === selectedItemId && (
                                   <div className={styles.optionsBlock}>
-                                    <button onClick={(e) => {
-                                      handleTicketModalOpen(item.id)
-                                      setShowOptions(false)
-                                      }} >Посмотреть талон</button>
+                                    <button
+                                      onClick={(e) => {
+                                        handleTicketModalOpen(item.id);
+                                        setShowOptions(false);
+                                      }}
+                                    >
+                                      Посмотреть талон
+                                    </button>
                                     <button>Перенести в другую очередь</button>
                                     <button
                                       style={{
-                                        color: 'red',
-                                        backgroundColor: '#f5f5f5',
-                                        borderRadius: '5px',
+                                        color: "red",
+                                        backgroundColor: "#f5f5f5",
+                                        borderRadius: "5px",
                                       }}
                                       onClick={() => {
                                         setShowModal(true);
@@ -210,9 +253,9 @@ const QueueOperatorPage = () => {
                                     </button>
                                     <button
                                       style={{
-                                        color: 'red',
-                                        backgroundColor: '#f5f5f5',
-                                        borderRadius: '5px',
+                                        color: "red",
+                                        backgroundColor: "#f5f5f5",
+                                        borderRadius: "5px",
                                       }}
                                       onClick={() => {
                                         setNewItem(false);
@@ -235,28 +278,43 @@ const QueueOperatorPage = () => {
             </div>
           </div>
         </div>
-        <div onClick={(e) => setContent2(!content2)} className={styles.queue__state}>
+        <div
+          onClick={(e) => setContent2(!content2)}
+          className={styles.queue__state}
+        >
           <div className={styles.queue__state__title}>
             <ArrowRightSVG
-              className={`${styles.arrowRight} ${content2 ? `${styles.reverseArrow}` : ``}`}
+              className={`${styles.arrowRight} ${
+                content2 ? `${styles.reverseArrow}` : ``
+              }`}
             />
             Переведен
           </div>
           <div className={styles.queue__state__counter}>8</div>
         </div>
-        <div onClick={(e) => setContent3(!content3)} className={styles.queue__state}>
+        <div
+          onClick={(e) => setContent3(!content3)}
+          className={styles.queue__state}
+        >
           <div className={styles.queue__state__title}>
             <ArrowRightSVG
-              className={`${styles.arrowRight} ${content3 ? `${styles.reverseArrow}` : ``}`}
+              className={`${styles.arrowRight} ${
+                content3 ? `${styles.reverseArrow}` : ``
+              }`}
             />
             Отклонен
           </div>
           <div className={styles.queue__state__counter}>8</div>
         </div>
-        <div onClick={(e) => setContent4(!content4)} className={styles.queue__state}>
+        <div
+          onClick={(e) => setContent4(!content4)}
+          className={styles.queue__state}
+        >
           <div className={styles.queue__state__title}>
             <ArrowRightSVG
-              className={`${styles.arrowRight} ${content4 ? `${styles.reverseArrow}` : ``}`}
+              className={`${styles.arrowRight} ${
+                content4 ? `${styles.reverseArrow}` : ``
+              }`}
             />
             Принимается
           </div>
@@ -268,14 +326,20 @@ const QueueOperatorPage = () => {
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <p>
-              Вы действительно хотите удалить <br /> клиента{' '}
+              Вы действительно хотите удалить <br /> клиента{" "}
               <span className={styles.modalSpan}>№{selectedTicketNumber}</span>
             </p>
             <div className={styles.modalButtons}>
-              <button onClick={() => setShowModal(false)} className={styles.cancelBTN}>
+              <button
+                onClick={() => setShowModal(false)}
+                className={styles.cancelBTN}
+              >
                 Отмена
               </button>
-              <button onClick={handleDeleteConfirm} className={styles.deleteBTN}>
+              <button
+                onClick={handleDeleteConfirm}
+                className={styles.deleteBTN}
+              >
                 Удалить
               </button>
             </div>
@@ -283,7 +347,7 @@ const QueueOperatorPage = () => {
         </div>
       )}
       {showTicketModal && (
-        <TicketModal ticketId={selectedTicketId} closeModal={closeModal}/>
+        <TicketModal ticketId={selectedTicketId} closeModal={closeModal} />
       )}
     </div>
   );
