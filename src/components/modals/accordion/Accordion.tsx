@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useQueueContext } from "../../../context/QueueContext";
 import styles from "./Accordion.module.scss";
-export interface IPost {
+export interface IWindow {
   id: number;
-  name: string;
+  window: any;
 }
 
 export interface IFullname {
@@ -11,37 +12,23 @@ export interface IFullname {
 }
 
 export interface AccordionProps {
-  onSelectPost: (post: IPost) => void;
-  onSelectWorker: (worker: IFullname) => void;
+  onSelectWindow: (window: IWindow) => void;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
-  onSelectPost,
-  onSelectWorker,
+  onSelectWindow
 }) => {
-  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
-  const [selectedWorker, setSelectedWorker] = useState<IFullname | null>(null);
+  const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
-  const posts: IPost[] = [
-    { id: 1, name: "Кассир" },
-    { id: 2, name: "Гл.Менеджер" },
-  ];
+  const { windows, getAllWindows } = useQueueContext();
 
-  const workers: IFullname[] = [
-    { id: 1, name: "Аманова Г.Д" },
-    { id: 2, name: "Исламова Р.М" },
-  ];
+  useEffect(() => {
+    getAllWindows()
+  }, [])
 
-  const handlePostSelect = (post: IPost) => {
-    setSelectedPost(post);
-    onSelectPost(post);
-    setIsAccordionOpen(false);
-  };
-
-  const handleWorkerSelect = (worker: IFullname) => {
-    setSelectedWorker(worker);
-    onSelectWorker(worker);
+  const handlePostSelect = (widnow: IWindow) => {
+    setSelectedPost(widnow);
     setIsAccordionOpen(false);
   };
 
@@ -54,10 +41,8 @@ const Accordion: React.FC<AccordionProps> = ({
         }`}
       >
         {selectedPost
-          ? selectedPost.name
-          : selectedWorker
-          ? selectedWorker.name
-          : "Должность"}
+          ? selectedPost.window
+          : "Окно"}
       </h1>
       <div
         className={`${styles.accordionContent} ${
@@ -66,22 +51,13 @@ const Accordion: React.FC<AccordionProps> = ({
       >
         {isAccordionOpen && (
           <>
-            {posts.map((post) => (
+            {windows?.map((window: any) => (
               <p
-                key={post.id}
-                onClick={() => handlePostSelect(post)}
-                className={selectedPost === post ? styles.active : ""}
+                key={window.id}
+                onClick={() => handlePostSelect(window)}
+                className={selectedPost === window ? styles.active : ""}
               >
-                {post.name}
-              </p>
-            ))}
-            {workers.map((worker) => (
-              <p
-                key={worker.id}
-                onClick={() => handleWorkerSelect(worker)}
-                className={selectedWorker === worker ? styles.active : ""}
-              >
-                {worker.name}
+                {window.window}
               </p>
             ))}
           </>

@@ -7,7 +7,7 @@ import { useQueueContext } from '../context/QueueContext';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TicketModal from '../modals/ClientModals/OperatorModal/TicketModal';
 import { useNavigate } from 'react-router-dom';
-import Accordion, { IFullname, IPost } from '../components/modals/accordion/Accordion';
+import Accordion, { IFullname, IWindow } from '../components/modals/accordion/Accordion';
 import { ReactComponent as ArrowSVG } from '../images/fluent_ios-arrow-ltr-24-regular.svg';
 import { ReactComponent as CloseSVG } from '../images/Vector (6).svg';
 
@@ -109,15 +109,10 @@ const QueueOperatorPage = () => {
     setHandleModal(true);
   }
 
-  const handleSelectPost = (post: IPost) => {
+  const handleSelectPost = (post: IWindow) => {
     console.log("Должность", post);
     // Другая логика обработки выбранной фирмы
   };
-  const handleSelectWorker = (worker: IFullname) => {
-    console.log("ФИО", worker);
-  };
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className={styles.hero}>
@@ -449,15 +444,12 @@ const QueueOperatorPage = () => {
       { handleModal && (
         <div className={styles.modal3}>
           <div className={styles.modalContent3}>
-            <div className={styles.modalContent3__title}>Перевод к другому специалисту</div>
+            <div className={styles.modalContent3__title}>Перевод к другой очереди</div>
             <CloseSVG className={styles.closeSVG} onClick={() => setHandleModal(false)} />
             <div className={styles.modalContent3__items}>
               <div className={styles.modal3Content__accordion}>
-                <Accordion onSelectPost={handleSelectPost} onSelectWorker={handleSelectWorker} />
+                <Accordion onSelectWindow={handleSelectPost} />
                 <ArrowSVG/>
-              </div>
-              <div className={styles.modal3Content__FIO}>
-                ФИО <ArrowSVG/>
               </div>
             </div>
           </div>
