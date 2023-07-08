@@ -3,7 +3,7 @@ import { useQueueContext } from "../../../context/QueueContext";
 import styles from "./Accordion.module.scss";
 export interface IWindow {
   id: number;
-  window: any;
+  number: any;
 }
 
 export interface IFullname {
@@ -13,10 +13,11 @@ export interface IFullname {
 
 export interface AccordionProps {
   onSelectWindow: (window: IWindow) => void;
+  windowData: (newWindowData: any) => void;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
-  onSelectWindow
+  onSelectWindow, windowData
 }) => {
   const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -30,7 +31,9 @@ const Accordion: React.FC<AccordionProps> = ({
   const handlePostSelect = (widnow: IWindow) => {
     setSelectedPost(widnow);
     setIsAccordionOpen(false);
+    windowData(widnow?.id);
   };
+
 
   return (
     <div>
@@ -41,7 +44,7 @@ const Accordion: React.FC<AccordionProps> = ({
         }`}
       >
         {selectedPost
-          ? selectedPost.window
+          ? `Окно №${selectedPost.number}`
           : "Окно"}
       </h1>
       <div
@@ -57,7 +60,7 @@ const Accordion: React.FC<AccordionProps> = ({
                 onClick={() => handlePostSelect(window)}
                 className={selectedPost === window ? styles.active : ""}
               >
-                {window.window}
+                Окно №{ window.number }
               </p>
             ))}
           </>

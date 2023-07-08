@@ -598,6 +598,21 @@ background-color: rgba(231, 81, 81, 0.121);
   transition-duration: 0.3s;
 }
 
+.shift{
+  display: flex;
+  width: 270px;
+  height: 50px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid #3993C3;
+  background: #3993C3;
+  color: white;
+}
+
 
 /* HomePage */
 .heyThere{

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,6 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useQueueContext } from "../../context/QueueContext";
 
 ChartJS.register(
   CategoryScale,
@@ -18,6 +20,7 @@ ChartJS.register(
   Legend,
   Filler
 );
+
 
 export const options = {
   plugins: {
@@ -65,5 +68,29 @@ export const data = {
 };
 
 export function LineChart({ options, data }: { options: any; data: any }) {
-  return <Line options={options} data={data} />;
+  const { allQueues, getAllQueues } = useQueueContext();
+
+  useEffect(() => {
+    getAllQueues(); 
+  }, []);
+
+  const statData = {
+    labels,
+    datasets: [
+      {
+        fill: true,
+        label: "Обслужено",
+        data: [allQueues?.length],
+        borderColor: "rgba(54, 175, 235, 1)",
+        backgroundColor: "rgba(57, 147, 195, 0.2)",
+        pointBorderColor: "rgba(130, 106, 249, 1)",
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: "rgba(255, 255, 255, 1)",
+      }
+    ]
+  }
+
+  console.log(allQueues)
+  return <Line options={options} data={statData} />;
 }
