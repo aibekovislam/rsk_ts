@@ -15,19 +15,18 @@ import { ReactComponent as RecordSVG } from "../images/records.svg";
 
 import { Link } from "react-router-dom";
 import { useQueueContext } from "../context/QueueContext";
+import { useAuthContext } from "../context/AuthContext";
+import { BASE_URL } from "../utils/consts";
 
 const Navbar: React.FC = () => {
   const { operatorChangeStatus, status } = useQueueContext();
+  const { user } = useAuthContext();
 
   interface Ipage {
     icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
     title: string;
     link: string;
   }
-
-  // console.log(status);
-
-  //rgba(248, 248, 248, 1)
 
   const pages: Ipage[] = [
     {
@@ -43,12 +42,12 @@ const Navbar: React.FC = () => {
     {
       icon: <Icon3SVG />,
       title: "Список операций",
-      link: "/",
+      link: "/operator/queue_history",
     },
     {
       icon: <RecordSVG />,
       title: "Записи",
-      link: "/",
+      link: "/operator/queue_booking",
     },
     {
       icon: <ChartSVG />,
@@ -61,6 +60,7 @@ const Navbar: React.FC = () => {
     title: string;
     link: string;
   }
+  
 
   const adminPages: IadminPage[] = [
     {
@@ -71,8 +71,6 @@ const Navbar: React.FC = () => {
 
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
-
-  console.log(status)
 
   return (
     <header>
@@ -109,9 +107,9 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className={styles.user}>
-            <div className={styles.user_name}>Окно №5</div>
+            <div className={styles.user_name}>{ user?.position === "operator" ? "Оператор" : "Аноним" }</div>
             <div className={styles.user_photo}>
-              <AvatarSVG />
+              <AvatarSVG/>
             </div>
           </div>
         </div>

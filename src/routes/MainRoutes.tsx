@@ -6,6 +6,8 @@ import { QueueAuthAdmin } from "../pages/QueueAuthAdmin";
 import ClientPage from "../pages/ClientPage";
 import Statistics from "../pages/Statistics";
 import QueueOperatorPage from "../pages/QueueOperatorPage";
+import QueueHistoryOperatorPage from "../pages/QueueHistoryOperatorPage";
+import BookingOperatorPage from "../pages/BookingOperatorPage";
 
 export const MainRoutes = () => {
   return (
@@ -15,6 +17,8 @@ export const MainRoutes = () => {
         <Route path="/client" element={<ClientPage />} />
         <Route path="/operator/queue" element={<QueueOperatorPage />}></Route>
         <Route path="/operator_stat" element={<Statistics />} />
+        <Route path="/operator/queue_history" element={<QueueHistoryOperatorPage/>} ></Route>
+        <Route path="/operator/queue_booking" element={<BookingOperatorPage/>} ></Route>
       </Route>
       <Route path="/auth" element={<QueueAuthAdmin />}></Route>
     </Routes>

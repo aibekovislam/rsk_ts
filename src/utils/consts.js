@@ -7,5 +7,8 @@ export const ACTIONS = {
     queue: "queue",
     inQueue: "inQueue",
     statusOfOperator: "statusOfOperator",
-    windows: "windows"
+    windows: "windows",
+    shiftedQueues: "shiftedQueues",
+    allQueues: "allQueues",
+    booking: "booking"
 }

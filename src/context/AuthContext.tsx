@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import $axios from "../utils/axios";
 
 type User = {
-  email: string;
+  email?: string;
+  avatar?: any,
+  banned?: boolean,
+  first_name?: string,
+  last_name?: string,
+  position?: string,
 };
 
 type AuthState = {

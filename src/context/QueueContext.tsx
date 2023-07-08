@@ -3,7 +3,6 @@ import React, { createContext, PropsWithChildren, useContext, useReducer, useEff
 import { useNavigate } from 'react-router-dom';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
-import io from 'socket.io-client';
 
 interface QueueTypes {
     queues: object,
@@ -24,7 +23,10 @@ const initState = {
     oneQueue: null,
     inQueue: [],
     rejectedQueue: [],
-    windows: []
+    windows: [],
+    shiftedQueues: [],
+    allQueues: [],
+    booking: []
 }
 
 let newQueues = [];
@@ -42,7 +44,13 @@ function reducer(state: any, action: any) {
         case ACTIONS.statusOfOperator:
             return { ...state, statusOfOperator: action.payload }
         case ACTIONS.windows:
-            return { ...state, windows: action.payload }      
+            return { ...state, windows: action.payload }
+        case ACTIONS.shiftedQueues:
+            return { ...state, shiftedQueues: action.payload }
+        case ACTIONS.allQueues:
+            return { ...state, allQueues: action.payload }
+        case ACTIONS.booking:
+            return { ...state, booking: action.payload }      
         default:
             return state;
     }
@@ -55,11 +63,24 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function getCustomers() {
         try {
-            const res = await axios.get(`${BASE_URL}/customers/`);
-            const filteredResults = res.data.results.filter((item: any) => item.is_served === null);
+            const res = await $axios.get(`${BASE_URL}/operator/get_customers_in_queue/`);
+            const filteredResults = res.data.filter((item: any) => item.is_served === null);
             dispatch({
                 type: ACTIONS.queues,
                 payload: filteredResults
+                // payload: res.data
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function getAllQueues() {
+        try {
+            const res = await $axios.get(`${BASE_URL}/operator/get_served_customers_all/`);
+            dispatch({
+                type: ACTIONS.allQueues,
+                payload: res.data
             })
         } catch (error) {
             console.log(error)
@@ -91,6 +112,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
     async function rejectQueue(id: number) {
         try {
             const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_cancelled/`);
+            navigate("/operator/queue");
             console.log(res.data);
         } catch (error) {
             console.log(error)
@@ -128,7 +150,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
     const inQueueTALONDetail = async (id: number) => {
         try {
             const res = await $axios.get(`${BASE_URL}/customers/${id}`);
-            if(res.data.is_served === true) {
+            if(res.data.is_served === true || res.data.is_served === false) {
                 dispatch({
                     type: ACTIONS.inQueue,
                     payload: []
@@ -156,11 +178,27 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         }
     }
 
-    const shiftQueue = async (id: number, newWindow: any) => {
+    const shiftQueue = async (newWindow: string, id: any) => {
         try {
-            const res = await $axios.patch(`${BASE_URL}/operator/${id}/shift_window/`, newWindow);
-            console.log(res);
+            const shiftWindowData = {
+                window: newWindow,
+                id: id
+              };            
+            const res = await $axios.patch(`${BASE_URL}/operator/${id}/shift_window/`, shiftWindowData);
             getCustomers();
+            navigate("/operator/queue")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getShiftedQueues = async () => {
+        try {
+            const res = await $axios.get(`${BASE_URL}/operator/shift_list/`);
+            dispatch({
+                type: ACTIONS.shiftedQueues,
+                payload: res.data
+            })
         } catch (error) {
             console.log(error)
         }
@@ -194,8 +232,31 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             const res = await $axios.get(`${BASE_URL}/branches/window/`);
             dispatch({
                 type: ACTIONS.windows,
-                payload: res
+                payload: res.data.results
             })
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getBooking = async () => {
+        try {
+            const res = await $axios.get(`${BASE_URL}/booking/`);
+            dispatch({
+                type: ACTIONS.booking,
+                payload: res.data.results
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteBooking = async (id: number) => {
+        try {
+            await $axios.delete(`${BASE_URL}/booking/${id}/`);
+            getBooking();
+            console.log('Deleted')
         } catch (error) {
             console.log(error)
         }
@@ -220,7 +281,14 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         status: state.statusOfOperator,
         editTalon,
         getAllWindows,
-        windows: state.windows
+        windows: state.windows,
+        getShiftedQueues,
+        shiftedQueues: state.shiftedQueues,
+        getAllQueues,
+        allQueues: state.allQueues,
+        getBooking,
+        booking: state.booking,
+        deleteBooking
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
