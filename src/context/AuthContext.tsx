@@ -86,6 +86,19 @@ function AuthContext({ children }: { children: React.ReactNode }) {
         type: ACTIONS.user,
         payload: data,
       });
+
+      const oper = await axios.post(
+        `${BASE_URL}/operator/actions/come_in_system/`,
+        {},
+        {
+          headers: {
+            Authorization: `Token ${tokens.access}`,
+          },
+        }
+      );
+      console.log(oper);
+  
+
     } catch (error) {
       console.log(error);
     }
