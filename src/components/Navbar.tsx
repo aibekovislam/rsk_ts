@@ -14,15 +14,20 @@ import { ReactComponent as ChartSVG } from "../images/chart.svg";
 import { ReactComponent as RecordSVG } from "../images/records.svg";
 
 import { Link } from "react-router-dom";
+import { useQueueContext } from "../context/QueueContext";
 
 const Navbar: React.FC = () => {
   const [switchState, setSwitchState] = React.useState(false);
+
+  const { operatorChangeStatus, status } = useQueueContext();
 
   interface Ipage {
     icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
     title: string;
     link: string;
   }
+
+  console.log(status);
 
   //rgba(248, 248, 248, 1)
 
@@ -74,20 +79,27 @@ const Navbar: React.FC = () => {
             <div className={styles.header_logo}>
               <LogoSVG />
             </div>
-            <div className={styles.timeBreak}>
-              Перерыв
-              {switchState ? (
-                <SwitchoffSVG
+              <div className={styles.timeBreak}>
+              { status?.status === "Online" ? "Оператор онлайн" : "Оператор отключен" }
+              {status?.status === "Online" ? (
+                  <SwitchonSVG
                   className={styles.switch}
-                  onClick={(e) => setSwitchState(!switchState)}
+                  onClick={(e) => {
+                    operatorChangeStatus();
+                    setSwitchState(!switchState)
+                  }}
                 />
               ) : (
-                <SwitchonSVG
+                <SwitchoffSVG
                   className={styles.switch}
-                  onClick={(e) => setSwitchState(!switchState)}
+                  onClick={(e) => {
+                    operatorChangeStatus();
+                    setSwitchState(!switchState)
+                  }}
                 />
               )}
             </div>
+            
             <div className={styles.chat}>
               Рабочий чат
               <ChatSVG className={styles.chatSVG} />
@@ -97,7 +109,6 @@ const Navbar: React.FC = () => {
             <div className={styles.user_name}>Окно №5</div>
             <div className={styles.user_photo}>
               <AvatarSVG />
-              {/*photo_URL*/}
             </div>
           </div>
         </div>

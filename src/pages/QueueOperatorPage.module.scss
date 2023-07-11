@@ -140,6 +140,12 @@
   margin-top: 35px;
 }
 
+.tbody__operator{
+  font-size: 20px;
+  color: rgba(1, 116, 177, 1);
+  font-weight: 400;
+}
+
 .tbody__item__talon{
   display: flex;
   width: 100%;
@@ -329,6 +335,79 @@ background-color: rgba(231, 81, 81, 0.121);
   position: relative;
 }
 
+.modal3{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-duration: 0.3s;
+  // padding: 30px;
+}
+
+.modalContent3 {
+  background-color: #fff;
+  padding: 70px 40px;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 814px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.modalContent3__title{
+  color: #333030;
+  font-size: 32px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.closeSVG{
+  position: absolute;
+  top: 5%;
+  right: 2%;
+  cursor: pointer;
+}
+
+.modalContent3__items{
+  display: flex;
+  width: 578px;
+  padding: 31px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 99px;
+}
+
+.modal3Content__accordion{
+  display: flex;
+  width: 200px;
+  height: 45px;
+  padding: 10px 10px 5px 0px;
+  align-items: center;
+  gap: 61px;
+  flex-shrink: 0;
+}
+
+.modal3Content__FIO{
+  display: flex;
+  width: 200px;
+  height: 45px;
+  padding: 10px 0px 5px 10px;
+  align-items: center;
+  gap: 123px;
+  flex-shrink: 0;
+}
 
 .modalTime{
   display: flex;
@@ -482,6 +561,21 @@ background-color: rgba(231, 81, 81, 0.121);
   transition-duration: 0.3s;
 }
 
+.optionsBlock2{
+  position: absolute;
+  // bottom: 90%;
+  top: 110%;
+  left: 70%;
+  right: 0;
+  width: 350px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition-duration: 0.3s;
+}
+
 .optionsBlock button {
   display: block;
   width: 100%;
@@ -489,6 +583,12 @@ background-color: rgba(231, 81, 81, 0.121);
   margin-bottom: 5px;
 }
 
+.optionsBlock2 button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+}
 
 /* dnd */
 
