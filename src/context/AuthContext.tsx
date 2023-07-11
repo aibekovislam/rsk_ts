@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import $axios from "../utils/axios";
 
 type User = {
-  email: string;
+  email?: string;
+  avatar?: any,
+  banned?: boolean,
+  first_name?: string,
+  last_name?: string,
+  position?: string,
 };
 
 type AuthState = {
@@ -81,6 +86,19 @@ function AuthContext({ children }: { children: React.ReactNode }) {
         type: ACTIONS.user,
         payload: data,
       });
+
+      const oper = await axios.post(
+        `${BASE_URL}/operator/actions/come_in_system/`,
+        {},
+        {
+          headers: {
+            Authorization: `Token ${tokens.access}`,
+          },
+        }
+      );
+      console.log(oper);
+  
+
     } catch (error) {
       console.log(error);
     }

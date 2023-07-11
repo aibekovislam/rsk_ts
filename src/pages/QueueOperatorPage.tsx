@@ -9,7 +9,7 @@ import TicketModal from "../modals/ClientModals/OperatorModal/TicketModal";
 import { useNavigate } from "react-router-dom";
 import Accordion, {
   IFullname,
-  IPost,
+  IWindow,
 } from "../components/modals/accordion/Accordion";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
 import { ReactComponent as CloseSVG } from "../images/Vector (6).svg";
@@ -27,6 +27,9 @@ const QueueOperatorPage = () => {
     inQueue,
     rejectedQueues,
     getRejectedQueue,
+    status,
+    shiftedQueues,
+    getShiftedQueues,
   } = useQueueContext();
 
   const navigate = useNavigate();
@@ -34,7 +37,10 @@ const QueueOperatorPage = () => {
   useEffect(() => {
     getCustomers();
     getRejectedQueue();
+    getShiftedQueues();
   }, []);
+
+  console.log(shiftedQueues);
 
   const [content1, setContent1] = useState(false);
   const [content2, setContent2] = useState(false);
@@ -107,7 +113,11 @@ const QueueOperatorPage = () => {
 
   const [queueDETAILS, setQueueDETAILS] = useState([]);
 
-  console.log(rejectedQueues);
+  const [windowData, setWindowData] = useState<IWindow | null>(null);
+
+  const handleChangeWindowData = (newWindowData: any) => {
+    setWindowData(newWindowData);
+  };
 
   useEffect(() => {
     if (inQueue) {
@@ -121,15 +131,13 @@ const QueueOperatorPage = () => {
     setHandleModal(true);
   };
 
-  const handleSelectPost = (post: IPost) => {
+  const handleSelectPost = (post: IWindow) => {
     console.log("Должность", post);
-    // Другая логика обработки выбранной фирмы
-  };
-  const handleSelectWorker = (worker: IFullname) => {
-    console.log("ФИО", worker);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [idState, setIdState] = useState(0);
+
+  console.log(queues);
 
   return (
     <div className={styles.hero}>
@@ -140,7 +148,8 @@ const QueueOperatorPage = () => {
             <span>
               {queues?.length +
                 rejectedQueues?.length +
-                Object.keys(inQueue).length}
+                Object.keys(inQueue).length +
+                shiftedQueues?.length}
             </span>
           </div>
         </div>
@@ -246,7 +255,7 @@ const QueueOperatorPage = () => {
                                     {item.queue}
                                   </div>
                                   <div className={styles.tbody__time}>
-                                    {convertTime(item.waiting_time)}
+                                    {convertTime(item.in_queue_time)}
                                   </div>
                                   <div className={styles.tbody__buttons}>
                                     <button
@@ -289,14 +298,7 @@ const QueueOperatorPage = () => {
                                         >
                                           Посмотреть талон
                                         </button>
-                                        <button
-                                          onClick={() => {
-                                            handleModalOpen();
-                                            setShowOptions(false);
-                                          }}
-                                        >
-                                          Перенести в другую очередь
-                                        </button>
+
                                         <button
                                           style={{
                                             color: "red",
@@ -338,7 +340,96 @@ const QueueOperatorPage = () => {
             />
             Переведен
           </div>
-          <div className={styles.queue__state__counter}>8</div>
+          <div className={styles.queue__state__counter}>
+            {shiftedQueues?.length}
+          </div>
+        </div>
+        <div
+          style={
+            content2
+              ? { maxHeight: "100%", display: "block" }
+              : { maxHeight: "0px", display: "none" }
+          }
+          className={styles.tableBlock}
+        >
+          <div className={styles.table}>
+            <div className={styles.tableItems}>
+              <div className={styles.tableItem__tbody}>
+                <div className={styles.tableItem__thead}>
+                  <div className={styles.thead__number}>Клиент №</div>
+                  <div className={styles.thead__question}>Вопрос</div>
+                  <div className={styles.thead__time}>Перевел</div>
+                </div>
+                {shiftedQueues?.map((item: any, index: number) => (
+                  <div
+                    key={item.id}
+                    className={`${styles.tbody__item__talon}`}
+                    style={
+                      index % 2 === 1
+                        ? { background: "rgba(248, 248, 248, 1)" }
+                        : undefined
+                    }
+                  >
+                    <div className={styles.tbody__talon}>
+                      <div className={styles.tbody__number}>{index + 1}.</div>
+                      <span
+                        style={
+                          item.category === "pregnant"
+                            ? { background: "rgba(252, 190, 183, 1)" }
+                            : item.category === "veteran"
+                            ? { background: "rgba(155, 228, 129, 1)" }
+                            : item.category === "pensioner"
+                            ? { background: "rgba(234, 237, 93, 1)" }
+                            : item.category === "disabled person"
+                            ? { background: "rgba(228, 129, 201, 1)" }
+                            : undefined
+                        }
+                      ></span>{" "}
+                      {item.ticket_number}
+                    </div>
+                    <div className={styles.tbody__question}>{item.queue}</div>
+                    <div className={styles.tbody__operator}>
+                      {item.old_operator}
+                    </div>
+                    <div className={styles.tbody__buttons}>
+                      <TripleDotsSVG
+                        className={styles.tripledots}
+                        onClick={() =>
+                          handleOptionsClick(item.id, item.ticket_number)
+                        }
+                      />
+                    </div>
+                    {showOptions && item.id === selectedItemId && (
+                      <div className={styles.optionsBlock2}>
+                        <button
+                          onClick={(e) => {
+                            handleTicketModalOpen(item.id);
+                            setShowOptions(false);
+                          }}
+                        >
+                          Посмотреть талон
+                        </button>
+
+                        <button
+                          style={{
+                            color: "red",
+                            backgroundColor: "#f5f5f5",
+                            borderRadius: "5px",
+                          }}
+                          onClick={() => {
+                            setShowModal(true);
+                            setShowOptions(false);
+                          }}
+                        >
+                          Удалить
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
         <div
           onClick={(e) => setContent3(!content3)}
@@ -356,8 +447,6 @@ const QueueOperatorPage = () => {
             {rejectedQueues?.length}
           </div>
         </div>
-
-        {/* rejectedQueue */}
         <div
           style={
             content3
@@ -403,7 +492,7 @@ const QueueOperatorPage = () => {
                     </div>
                     <div className={styles.tbody__question}>{item.queue}</div>
                     <div className={styles.tbody__time}>
-                      {convertTime(item.waiting_time)}
+                      {convertTime(item.in_queue_time)}
                     </div>
                     <div className={styles.tbody__buttons}>
                       <TripleDotsSVG
@@ -423,7 +512,7 @@ const QueueOperatorPage = () => {
                         >
                           Посмотреть талон
                         </button>
-                        <button>Перенести в другую очередь</button>
+
                         <button
                           style={{
                             color: "red",
@@ -516,7 +605,6 @@ const QueueOperatorPage = () => {
                     >
                       Посмотреть талон
                     </button>
-                    <button>Перенести в другую очередь</button>
                     <button
                       style={{
                         color: "red",
@@ -568,7 +656,7 @@ const QueueOperatorPage = () => {
         <div className={styles.modal3}>
           <div className={styles.modalContent3}>
             <div className={styles.modalContent3__title}>
-              Перевод к другому специалисту
+              Перевод к другой очереди
             </div>
             <CloseSVG
               className={styles.closeSVG}
@@ -577,15 +665,13 @@ const QueueOperatorPage = () => {
             <div className={styles.modalContent3__items}>
               <div className={styles.modal3Content__accordion}>
                 <Accordion
-                  onSelectPost={handleSelectPost}
-                  onSelectWorker={handleSelectWorker}
+                  onSelectWindow={handleSelectPost}
+                  windowData={handleChangeWindowData}
                 />
                 <ArrowSVG />
               </div>
-              <div className={styles.modal3Content__FIO}>
-                ФИО <ArrowSVG />
-              </div>
             </div>
+            <button className={styles.shift}>Перевести</button>
           </div>
         </div>
       )}

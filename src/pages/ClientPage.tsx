@@ -12,16 +12,21 @@ import { ReactComponent as CLoseSVG } from "../images/close btn.svg";
 import moment from 'moment';
 import 'moment-timezone';
 import Accordion, {
-  IFullname,
-  IPost,
+  IWindow,
 } from "../components/modals/accordion/Accordion";
 import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, editTalon } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, editTalon, shiftQueue } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
+
+  const [ windowData, setWindowData ] = useState<IWindow | null>(null);
+
+  const handleChangeWindowData = (newWindowData: any) => {
+    setWindowData(newWindowData)
+  }
 
   useEffect(() => {
     getCustomers();
@@ -34,15 +39,12 @@ export const ClientPage: React.FC = () => {
   }, [queue])
 
 
-  const handleSelectPost = (post: IPost) => {
-    console.log("Должность", post);
+  const handleSelectPost = (post: IWindow) => {
+    console.log("Окно", post);
     // Другая логика обработки выбранной фирмы
   };
-  const handleSelectWorker = (worker: IFullname) => {
-    console.log("ФИО", worker);
-  };
 
-  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -82,11 +84,14 @@ export const ClientPage: React.FC = () => {
 
   const [ changeDATA, setChangeDATA ] = useState(false);
 
-  console.log(queue);
+  // console.log(queue);
 
   if (queueLoading) {
     return <div>Loading...</div>; // Или отобразите спиннер загрузки или другой индикатор
   }
+
+  console.log(windowData?.toString())
+
 
   return (
     <div className={styles.wrapper}>
@@ -156,31 +161,24 @@ export const ClientPage: React.FC = () => {
                 {isAccordionOpen && (
                   <>
                     <Accordion
-                      onSelectPost={handleSelectPost}
-                      onSelectWorker={handleSelectWorker}
+                      onSelectWindow={handleSelectPost}
+                      windowData={handleChangeWindowData}
                     />
                     <ArrowSVG />
                   </>
                 )}
               </div>
-              <div className={styles.right_accordion}>
-                <Accordion
-                  onSelectPost={handleSelectPost}
-                  onSelectWorker={handleSelectWorker}
-                />{" "}
-                {<ArrowSVG />}
-              </div>
             </div>
-            <button className={styles.btn}>Перевести</button>
+            <button className={styles.btn} onClick={() => shiftQueue(windowData?.toString(), queue?.id)}>Перевести</button>
           </div>
         </div>
       </TranslateModal>
       <div className={styles.wrapper_right}>
         <h1>Талон клиента</h1>
         <div className={styles.ticket}>
-          <h2 className={styles.ticket_number}>{ queue.ticket_number }</h2>
+          <h2 className={styles.ticket_number}>{ queue?.ticket_number }</h2>
           <h4 className={styles.ticket_pin}>
-            ПИН: <p className={styles.pin}>{ queue.pasport }</p>
+            ПИН: <p className={styles.pin}>{ queue?.pasport }</p>
           </h4>
         </div>
         <div className={styles.ticket_subinfo}>

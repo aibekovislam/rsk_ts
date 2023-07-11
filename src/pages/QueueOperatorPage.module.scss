@@ -397,6 +397,7 @@ background-color: rgba(231, 81, 81, 0.121);
   align-items: center;
   gap: 61px;
   flex-shrink: 0;
+  justify-content: space-around;
 }
 
 .modal3Content__FIO{
@@ -595,4 +596,37 @@ background-color: rgba(231, 81, 81, 0.121);
 .dragging{
   border: 3px solid rgba(1, 116, 177, 1);
   transition-duration: 0.3s;
+}
+
+.shift{
+  display: flex;
+  width: 270px;
+  height: 50px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid #3993C3;
+  background: #3993C3;
+  color: white;
+}
+
+
+/* HomePage */
+.heyThere{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  margin-top: 130px;
+  gap: 13px;
+}
+
+.niceWork{
+  font-size: 40px;
+  color: #333030; 
 }
