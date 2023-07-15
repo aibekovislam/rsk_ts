@@ -186,3 +186,11 @@
 .auth__form__btn:hover {
   background-color: rgb(53, 136, 180);
 }
+
+
+.loadingS{
+  background-color: rgb(231, 229, 229);
+  outline: 1px solid gray;
+  border: 1px solid gray;
+  transition-duration: 0.1s;
+}

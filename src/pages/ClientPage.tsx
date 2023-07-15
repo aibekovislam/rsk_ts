@@ -4,7 +4,7 @@ import styles from "./Client.module.scss";
 import { ReactComponent as ClockSVG } from "../images/pepicons-print_clock.svg";
 import { ReactComponent as ChangeSVG } from "../images/Group (7).svg";
 import { ReactComponent as PrintSCG } from "../images/prime_print.svg";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { TranslateModal } from "../components/modals/clientModals/TranslateModal";
 import { useState } from "react";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
@@ -18,7 +18,7 @@ import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, editTalon, shiftQueue } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
