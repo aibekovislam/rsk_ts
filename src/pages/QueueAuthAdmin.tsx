@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1 (1).svg";
 import { ReactComponent as EyeOffSVG } from "../images/eye-off-outline.svg";
@@ -28,6 +28,8 @@ export const QueueAuthAdmin: React.FC = () => {
     }
   };
 
+  const [ isSignIn, SetIsSignIn ] = useState(false);
+
   if (user) {
     return <Navigate replace to="/" />;
   }
@@ -46,7 +48,7 @@ export const QueueAuthAdmin: React.FC = () => {
             <form className={styles.auth__form} onSubmit={handleSubmit}>
               <input
                 type="text"
-                className={styles.auth__form__email__real}
+                className={`${styles.auth__form__email__real} ${ isSignIn && `${styles.loadingS}`}`}
                 name="username"
                 onChange={(e) => {
                   e.target.value !== ""
@@ -64,7 +66,7 @@ export const QueueAuthAdmin: React.FC = () => {
 
               <input
                 type={inputType}
-                className={styles.auth__form__password}
+                className={`${styles.auth__form__password} ${ isSignIn && `${styles.loadingS}`}`}
                 name="password"
                 onChange={(e) => {
                   e.target.value !== ""
@@ -102,7 +104,7 @@ export const QueueAuthAdmin: React.FC = () => {
                 Забыли пароль?
               </a>
 
-              <button className={styles.auth__form__btn}>Войти</button>
+              <button className={styles.auth__form__btn} onClick={(e) => SetIsSignIn(true)}>Войти</button>
             </form>
           </div>
         </div>

@@ -13,14 +13,14 @@ import { ReactComponent as ChatSVG } from "../images/chatbubble-ellipses-outline
 import { ReactComponent as ChartSVG } from "../images/chart.svg";
 import { ReactComponent as RecordSVG } from "../images/records.svg";
 
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useQueueContext } from "../context/QueueContext";
 import { useAuthContext } from "../context/AuthContext";
 import { BASE_URL } from "../utils/consts";
 
 const Navbar: React.FC = () => {
   const { operatorChangeStatus, status } = useQueueContext();
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
 
   interface Ipage {
     icon: React.FC<React.SVGProps<SVGSVGElement>> | any;
@@ -72,6 +72,10 @@ const Navbar: React.FC = () => {
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
+  if(status === "Offline") {
+    return <Navigate replace to="/offline"></Navigate>
+  }
+
   return (
     <header>
       <div className={styles.container}>
@@ -80,26 +84,26 @@ const Navbar: React.FC = () => {
             <div className={styles.header_logo}>
               <LogoSVG />
             </div>
-              <div className={styles.timeBreak}>
-              { initialStatus.status == "Online" ? "Онлайн" : "Отключен" }
-              { initialStatus.status == "Online" ? (
-                  <SwitchonSVG
-                  className={styles.switch}
-                  onClick={(e) => {
-                    operatorChangeStatus();
-                    localStorage.setItem('status', 'Online');
-                  }}
-                />
-              ) : (
-                <SwitchoffSVG
-                  className={styles.switch}
-                  onClick={(e) => {
-                    operatorChangeStatus();
-                    localStorage.setItem('status', 'Offline');
-                  }}
-                />
-              )}
-            </div>
+            <div className={styles.timeBreak}>
+           {initialStatus.status === "Online" ? "Онлайн" : "Отключен"}
+                { initialStatus.status === 'Online' ? (
+                  <>
+                    <input type="checkbox" id="switch" checked onClick={() => {
+                      operatorChangeStatus();
+                      localStorage.setItem("status", "Online");
+                    }} />
+                    <label className={styles.label} htmlFor="switch">Toggle</label>
+                  </>
+                ) : (
+                  <>
+                    <input type="checkbox" id="switch" onClick={() => {
+                      operatorChangeStatus();
+                      localStorage.setItem("status", "Offline");
+                    }}  />
+                    <label className={styles.label} htmlFor="switch">Toggle</label>
+                  </>
+                )}
+          </div>
             
             <div className={styles.chat}>
               Рабочий чат
@@ -107,10 +111,11 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className={styles.user}>
-            <div className={styles.user_name}>{ user?.position === "operator" ? "Оператор" : "Аноним" }</div>
+            <div className={styles.user_name}>Оператор: { user?.first_name }</div>
             <div className={styles.user_photo}>
-              <AvatarSVG/>
+              <img src={`${BASE_URL}${user?.avatar}`} className={styles.avatar}  />
             </div>
+            <button className={styles.logOut} onClick={() => logout()}>Выйти</button>
           </div>
         </div>
       </div>
