@@ -24,8 +24,6 @@ const QueueOperatorPage = () => {
     getShiftedQueues()
   }, []);
 
-  console.log(shiftedQueues)
-
   const [content1, setContent1] = useState(false);
   const [content2, setContent2] = useState(false);
   const [content3, setContent3] = useState(false);
@@ -120,12 +118,12 @@ const QueueOperatorPage = () => {
     console.log("Должность", post);
   };
 
-  const [ idState, setIdState ] = useState(0);
-
-  console.log(queues)
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
   return (
-    <div className={styles.hero}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.hero}>
       <div className={styles.categoryBlock}>
         <div className={styles.bottomNav}>
           <div className={styles.allCounter}>
@@ -536,6 +534,9 @@ const QueueOperatorPage = () => {
         </div>
       ) }
     </div>
+    ) : (
+      <div className={styles.offlineText} >Система отключена</div>
+    ) 
   );
 };
 

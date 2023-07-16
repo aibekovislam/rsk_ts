@@ -10,5 +10,6 @@ export const ACTIONS = {
     windows: "windows",
     shiftedQueues: "shiftedQueues",
     allQueues: "allQueues",
-    booking: "booking"
+    booking: "booking",
+    error400: "error400"
 }

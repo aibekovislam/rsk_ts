@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Navbar.module.scss";
 import "../static/style.scss";
 import { ReactComponent as LogoSVG } from "../images/RSK_Bank_Logo 1.svg";
 import { ReactComponent as IconSVG } from "../images/Vector (1).svg";
 import { ReactComponent as Icon2SVG } from "../images/Group (4).svg";
 import { ReactComponent as Icon3SVG } from "../images/Group (3).svg";
-import { ReactComponent as Icon4SVG } from "../images/Vector (3).svg";
-import { ReactComponent as AvatarSVG } from "../images/изображение 5.svg";
-import { ReactComponent as SwitchoffSVG } from "../images/Switch (1).svg";
-import { ReactComponent as SwitchonSVG } from "../images/Switch (2).svg";
 import { ReactComponent as ChatSVG } from "../images/chatbubble-ellipses-outline (1).svg";
 import { ReactComponent as ChartSVG } from "../images/chart.svg";
 import { ReactComponent as RecordSVG } from "../images/records.svg";
 
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useQueueContext } from "../context/QueueContext";
 import { useAuthContext } from "../context/AuthContext";
 import { BASE_URL } from "../utils/consts";
@@ -56,25 +52,16 @@ const Navbar: React.FC = () => {
     },
   ];
 
-  interface IadminPage {
-    title: string;
-    link: string;
-  }
-  
-
-  const adminPages: IadminPage[] = [
-    {
-      title: "admin",
-      link: "",
-    },
-  ];
-
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
-  if(status === "Offline") {
-    return <Navigate replace to="/offline"></Navigate>
-  }
+  const [switchOn, setSwitchOn] = useState(initialStatus.status === "Online");
+
+  const handleSwitchChange = () => {
+    setSwitchOn(!switchOn);
+    operatorChangeStatus();
+  };
+
 
   return (
     <header>
@@ -86,29 +73,21 @@ const Navbar: React.FC = () => {
             </div>
             <div className={styles.timeBreak}>
            {initialStatus.status === "Online" ? "Онлайн" : "Отключен"}
-                { initialStatus.status === 'Online' ? (
-                  <>
-                    <input type="checkbox" id="switch" checked onClick={() => {
-                      operatorChangeStatus();
-                      localStorage.setItem("status", "Online");
-                    }} />
-                    <label className={styles.label} htmlFor="switch">Toggle</label>
-                  </>
-                ) : (
-                  <>
-                    <input type="checkbox" id="switch" onClick={() => {
-                      operatorChangeStatus();
-                      localStorage.setItem("status", "Offline");
-                    }}  />
-                    <label className={styles.label} htmlFor="switch">Toggle</label>
-                  </>
-                )}
+                <label className={styles.switch}>
+                  <input type="checkbox" id="switch" checked={switchOn} onChange={handleSwitchChange}
+                  />
+                  <span className={styles.slider}></span>
+                </label>
           </div>
             
-            <div className={styles.chat}>
-              Рабочий чат
-              <ChatSVG className={styles.chatSVG} />
-            </div>
+            { initialStatus.status === "Online" ? (
+              <div className={styles.chat}>
+                Рабочий чат
+                <ChatSVG className={styles.chatSVG} />
+              </div>
+            ) : (
+              null
+            ) }
           </div>
           <div className={styles.user}>
             <div className={styles.user_name}>Оператор: { user?.first_name }</div>
@@ -121,18 +100,24 @@ const Navbar: React.FC = () => {
       </div>
       <div className={styles.navigation}>
         <div className={styles.nav}>
-          {pages.map((page) => (
-            <ul className={styles.nav_items} key={page.title}>
-              <li className={styles.nav_link_item}>
-                <Link to={page.link}>
-                  <button className={styles.nav_link_item}>
-                    {page.icon}
-                    {page.title}
-                  </button>
-                </Link>
-              </li>
-            </ul>
-          ))}
+          { initialStatus.status === "Online" ? (
+            <>
+              {pages.map((page) => (
+              <ul className={styles.nav_items} key={page.title}>
+                <li className={styles.nav_link_item}>
+                  <Link to={page.link}>
+                    <button className={styles.nav_link_item}>
+                      {page.icon}
+                      {page.title}
+                    </button>
+                  </Link>
+                </li>
+              </ul>
+            ))}
+            </>
+          ) : (
+            <div>Вы отключены от системы</div>
+          ) }
         </div>
       </div>
     </header>

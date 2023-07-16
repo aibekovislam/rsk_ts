@@ -47,10 +47,14 @@ const QueueHistoryOperatorPage = () => {
         
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
           };
+
+    const savedStatus = localStorage.getItem('status');
+    const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
     
 
   return (
-    <div className={styles.hero}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.hero}>
       <div className={styles.categoryBlock}>
         <div className={styles.bottomNav}>
           <div className={styles.allCounter}>
@@ -111,6 +115,9 @@ const QueueHistoryOperatorPage = () => {
             </div>
         </div>
     </div>
+    ) : (
+      <div>Отключен от системы</div>
+    )
   )
 }
 

@@ -3,8 +3,11 @@ import styles from "./Stat.module.scss";
 import { LineChart, data, options } from "../components/chart/LineChart";
 
 function Statistics() {
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
   return (
-    <div className={styles.header}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.header}>
       <div className={styles.stat_bar}>
         <div>
           <h1 className={styles.title}>Статистика</h1>
@@ -21,6 +24,9 @@ function Statistics() {
 
       <LineChart options={options} data={data} />
     </div>
+    ) : (
+      <div>Отклонен от системы</div>
+    )
   );
 }
 
