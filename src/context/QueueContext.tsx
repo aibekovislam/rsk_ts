@@ -26,7 +26,8 @@ const initState = {
     windows: [],
     shiftedQueues: [],
     allQueues: [],
-    booking: []
+    booking: [],
+    error400: null
 }
 
 let newQueues = [];
@@ -50,7 +51,9 @@ function reducer(state: any, action: any) {
         case ACTIONS.allQueues:
             return { ...state, allQueues: action.payload }
         case ACTIONS.booking:
-            return { ...state, booking: action.payload }      
+            return { ...state, booking: action.payload }
+        case ACTIONS.error400:
+            return { ...state, error400: action.payload }      
         default:
             return state;
     }
@@ -186,8 +189,24 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
               };            
             const res = await $axios.patch(`${BASE_URL}/operator/${id}/shift_window/`, shiftWindowData);
             getCustomers();
-            navigate("/operator/queue")
-        } catch (error) {
+            if(res.status === 400) {
+                console.log(res.data);
+            } else {
+                navigate("/operator/queue")
+            }
+        } catch (error: any) {
+            if (error.response && error.response.status === 400) {
+                console.log('Ошибка 400: неверный запрос');
+                dispatch({
+                    type: ACTIONS.error400,
+                    payload: true
+                })
+              } else {
+                dispatch({
+                    type: ACTIONS.error400,
+                    payload: null
+                })
+              }          
             console.log(error)
         }
     }
@@ -288,7 +307,8 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         allQueues: state.allQueues,
         getBooking,
         booking: state.booking,
-        deleteBooking
+        deleteBooking,
+        error400: state.error400
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>

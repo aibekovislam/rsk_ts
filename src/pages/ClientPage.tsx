@@ -18,7 +18,7 @@ import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400 } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
@@ -84,17 +84,17 @@ export const ClientPage: React.FC = () => {
 
   const [ changeDATA, setChangeDATA ] = useState(false);
 
-  // console.log(queue);
-
+  
   if (queueLoading) {
     return <div>Loading...</div>; // Или отобразите спиннер загрузки или другой индикатор
   }
 
-  console.log(windowData?.toString())
-
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
   return (
-    <div className={styles.wrapper}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.wrapper}>
       <div className={styles.wrapper_left}>
         <div className={styles.clock}>
           <ClockSVG />
@@ -143,7 +143,11 @@ export const ClientPage: React.FC = () => {
           <button className={styles.complete} onClick={() => operatorEndServed(queue?.id)} >Завершить</button>
         </div>
       </div>
-      <TranslateModal isOpen={isOpen} onClose={closeModal}>
+      { error400 ? (
+        <div>Вы слишком много переводили</div>
+      ) : (
+        <>
+          <TranslateModal isOpen={isOpen} onClose={closeModal}>
         <div className={styles.wrapper_modal}>
           <div className={styles.modal}>
             <div onClick={closeModal} className={styles.close}>
@@ -196,7 +200,12 @@ export const ClientPage: React.FC = () => {
           </button>
         </div>
       </div>
+        </>
+      ) }
     </div>
+    ) : (
+      <div>Отключен от системы</div>
+    )
   );
 };
 
