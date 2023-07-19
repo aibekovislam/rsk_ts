@@ -88,7 +88,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
       });
 
       const oper = await axios.post(
-        `${BASE_URL}/operator/actions/come_in_system/`,
+        `${BASE_URL}/profile/operator/come_in_system/`,
         {},
         {
           headers: {

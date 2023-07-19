@@ -66,7 +66,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function getCustomers() {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_customers_in_queue/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_customers_in_queue/`);
             const filteredResults = res.data.filter((item: any) => item.is_served === null);
             dispatch({
                 type: ACTIONS.queues,
@@ -80,7 +80,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function getAllQueues() {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_served_customers_all/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_served_customers_all/`);
             dispatch({
                 type: ACTIONS.allQueues,
                 payload: res.data
@@ -101,7 +101,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function getRejectedQueue() {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_cancelled_customers/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_cancelled_customers/`);
             dispatch({
                 type: ACTIONS.rejectedQueue,
                 payload: res.data
@@ -114,7 +114,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function rejectQueue(id: number) {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_cancelled/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/mark_as_cancelled/`);
             navigate("/operator/queue");
             console.log(res.data);
         } catch (error) {
@@ -138,7 +138,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorStartServed = async (id: number) => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/start/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/start/`);
             dispatch({
                 type: ACTIONS.queue,
                 payload: res.data
@@ -172,7 +172,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorEndServed = async (id: number) => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_served/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/mark_as_served/`);
             inQueueTALONDetail(id);
             console.log(res, "Закончено");
             navigate("/operator/queue");
@@ -187,7 +187,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
                 window: newWindow,
                 id: id
               };            
-            const res = await $axios.patch(`${BASE_URL}/operator/${id}/shift_window/`, shiftWindowData);
+            const res = await $axios.patch(`${BASE_URL}/tickets/operator/${id}/shift_window/`, shiftWindowData);
             getCustomers();
             if(res.status === 400) {
                 console.log(res.data);
@@ -213,7 +213,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const getShiftedQueues = async () => {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/shift_list/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/shift_list/`);
             dispatch({
                 type: ACTIONS.shiftedQueues,
                 payload: res.data
@@ -225,7 +225,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorChangeStatus = async () => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/change_status/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/change_status/`);
             dispatch({
                 type: ACTIONS.statusOfOperator,
                 payload: res.data
