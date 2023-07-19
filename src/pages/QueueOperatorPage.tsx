@@ -110,10 +110,6 @@ const QueueOperatorPage = () => {
 
   const [ handleModal, setHandleModal ] = useState(false);
 
-  const handleModalOpen = () => {
-    setHandleModal(true);
-  }
-
   const handleSelectPost = (post: IWindow) => {
     console.log("Должность", post);
   };
