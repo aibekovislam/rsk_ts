@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { createContext, PropsWithChildren, useContext, useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
 
@@ -64,19 +65,56 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const navigate = useNavigate();
 
-    async function getCustomers() {
-        try {
-            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_customers_in_queue/`);
-            const filteredResults = res.data.filter((item: any) => item.is_served === null);
+
+    function getCustomers() {
+
+        const userID = localStorage.getItem("userID");
+
+        const websocketURL = `ws://35.228.114.191/ws/customers/${userID}/`;
+        const websocket = new WebSocket(websocketURL);
+
+        websocket.onopen = () => {
+            console.log('WebSocket connection is open.')
+        }
+
+        // Event listener for incoming messages from the server
+        websocket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('Received data from the server:', data);
+
+            const sortedData = data?.ticket_data.sort((a: any, b: any) => a.position - b.position)
+
             dispatch({
                 type: ACTIONS.queues,
-                payload: filteredResults
-                // payload: res.data
+                payload: sortedData
             })
-        } catch (error) {
-            console.log(error)
-        }
+        };
+        
+        // Event listener for WebSocket errors
+        websocket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        
+        // Event listener for when the connection is closed
+        websocket.onclose = (event) => {
+            console.log('WebSocket connection is closed.', event.code, event.reason);
+        };
     }
+
+    // async function getCustomers() {
+    //     try {
+    //         const res = await $axios.get(`${BASE_URL}/tickets/operator/get_customers_in_queue/`);
+    //         const filteredResults = res.data.filter((item: any) => item.is_served === null);
+    //         dispatch({
+    //             type: ACTIONS.queues,
+    //             payload: filteredResults
+    //             // payload: res.data
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
 
     async function getAllQueues() {
         try {
