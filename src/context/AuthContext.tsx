@@ -80,7 +80,9 @@ function AuthContext({ children }: { children: React.ReactNode }) {
       );
       localStorage.setItem("tokens", JSON.stringify(tokens));
 
-      const { data } = await $axios.get(`${BASE_URL}/profile/`);
+      const { data } = await $axios.get(`${BASE_URL}/admins/profile/`);
+
+      localStorage.setItem("userID", JSON.stringify(data?.user))
 
       dispatch({
         type: ACTIONS.user,

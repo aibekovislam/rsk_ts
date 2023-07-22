@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './QueueOperatorPage.module.scss';
 import { ReactComponent as ArrowRightSVG } from '../images/chevron-forward-outline (2).svg';
 import { ReactComponent as SwitchSVG } from '../images/Vector (4).svg';
@@ -10,19 +10,20 @@ import { useNavigate } from 'react-router-dom';
 import Accordion, { IFullname, IWindow } from '../components/modals/accordion/Accordion';
 import { ReactComponent as ArrowSVG } from '../images/fluent_ios-arrow-ltr-24-regular.svg';
 import { ReactComponent as CloseSVG } from '../images/Vector (6).svg';
+import useWebSocket from '../context/UseWebSocket';
 
 export let operator: string;
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, handleDragEnd, operatorStartServed, inQueueTALONDetail, inQueue, rejectedQueues, getRejectedQueue, status, shiftedQueues, getShiftedQueues } = useQueueContext();
+  const { getCustomers, queues, deleteQueue, handleDragEnd, operatorStartServed, inQueueTALONDetail, inQueue, rejectedQueues, getRejectedQueue, shiftedQueues, getShiftedQueues } = useQueueContext();
 
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    getCustomers();
-    getRejectedQueue();
-    getShiftedQueues()
-  }, []);
+    getCustomers()
+  }, [])
+
 
   const [content1, setContent1] = useState(false);
   const [content2, setContent2] = useState(false);
@@ -70,6 +71,20 @@ const QueueOperatorPage = () => {
     return `${hours}ч ${minutes}мин`;
   };
 
+  function convertCreatedAtToHours(created_at: string) {
+    const date = new Date(created_at);
+  
+    const minutes = date.getMinutes();
+    const hours = date.getHours();
+
+    if(minutes > 60) {
+      return `${hours} час, ${minutes} минут`
+    } else {
+      return `${minutes} мин`;
+    }
+
+  }  
+
   interface categories {
     circleColor?: string;
     title?: string;
@@ -116,6 +131,8 @@ const QueueOperatorPage = () => {
 
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
+
+  console.log(queues)
 
   return (
     initialStatus.status === "Online" ? (
@@ -196,7 +213,7 @@ const QueueOperatorPage = () => {
                                   {item.ticket_number}
                                 </div>
                                 <div className={styles.tbody__question}>{item.queue}</div>
-                                <div className={styles.tbody__time}>{convertTime(item.in_queue_time)}</div>
+                                <div className={styles.tbody__time}>{convertCreatedAtToHours(item.created_at)}</div>
                                 <div className={styles.tbody__buttons}>
                                   <button onClick={() => {
                                     operatorStartServed(item.id);
