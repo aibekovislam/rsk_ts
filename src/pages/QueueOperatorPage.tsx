@@ -15,15 +15,20 @@ import useWebSocket from '../context/UseWebSocket';
 export let operator: string;
 
 const QueueOperatorPage = () => {
-  const { getCustomers, queues, deleteQueue, handleDragEnd, operatorStartServed, inQueueTALONDetail, inQueue, rejectedQueues, getRejectedQueue, shiftedQueues, getShiftedQueues } = useQueueContext();
+  const { getCustomers, queues, deleteQueue, handleDragEnd, operatorStartServed, 
+    inQueueTALONDetail, inQueue, rejectedQueues, getRejectedQueue, 
+    shiftedQueues, getShiftedQueues, getWaitingList, callCustomer,
+    moveToTheCustomer
+  } = useQueueContext();
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    getCustomers()
+    getCustomers();
+    getWaitingList();
+    getRejectedQueue();
+    getShiftedQueues();
   }, [])
-
 
   const [content1, setContent1] = useState(false);
   const [content2, setContent2] = useState(false);
@@ -132,8 +137,6 @@ const QueueOperatorPage = () => {
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
-  console.log(queues)
-
   return (
     initialStatus.status === "Online" ? (
       <div className={styles.hero}>
@@ -153,6 +156,11 @@ const QueueOperatorPage = () => {
               <div className={styles.category__title}>{item.title}</div>
             </div>
           ))}
+          <div className={styles.category__block}>
+              <div
+                className={styles.circle_category} style={{ background: "orange" }}></div>
+              <div className={styles.category__title}>В листе ожидания</div>
+          </div>
         </div>
       </div>
       <div className={styles.content__queue}>
@@ -181,22 +189,15 @@ const QueueOperatorPage = () => {
                   <div className={styles.thead__question}>Вопрос</div>
                   <div className={styles.thead__time}>Время ожидания</div>
                 </div>
-                <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId="queue-list">
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <div>
                         {queues?.map((item: any, index: number) => {
                           return (
-                            <Draggable key={item.id.toString()} draggableId={item.id.toString()} index={index}>
-                            {(provided, snapshot) => (
                               <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                className={`${styles.tbody__item__talon} ${snapshot.isDragging ? styles.dragging : ''}`}
+                                className={`${styles.tbody__item__talon} ${item.position === 0 ? `${styles.isWaiting}` : ``}`}
                                 style={index % 2 === 1 ? { background: 'rgba(248, 248, 248, 1)' } : undefined}
                               >
-                                <div className={styles.tbody__talon}>
-                                  <div className={styles.tbody__number}>{index + 1}.</div>
+                                <div className={styles.tbody__talon} style={ item.position === 0 ? { color: "orange" } : {} }>
+                                  <div className={styles.tbody__number} style={ item.position === 0 ? { color: "orange" } : {} } >{index + 1}.</div>
                                   <span
                                     style={
                                       item.category === 'pregnant'
@@ -213,18 +214,16 @@ const QueueOperatorPage = () => {
                                   {item.ticket_number}
                                 </div>
                                 <div className={styles.tbody__question}>{item.queue}</div>
-                                <div className={styles.tbody__time}>{convertCreatedAtToHours(item.created_at)}</div>
+                                <div className={styles.tbody__time} style={ item.position === 0 ? { color: "orange", border: "1px solid orange" } : {} } >{convertCreatedAtToHours(item.created_at)}</div>
                                 <div className={styles.tbody__buttons}>
-                                  <button onClick={() => {
+                                  <button style={ item.position === 0 ? { "backgroundColor": "orange" } : {} }  onClick={() => {
                                     operatorStartServed(item.id);
                                     inQueueTALONDetail(item.id);
                                     navigate("/client")
                                     }}>Принять</button>
-                                    {provided.dragHandleProps && (
-                                      <div {...provided.dragHandleProps} className={styles.switch}>
+                                      <div className={styles.switch} onClick={() => moveToTheCustomer(item.id)} >
                                         <SwitchSVG className={styles.switchIcon} />
                                       </div>
-                                    )}
                                   <TripleDotsSVG
                                     className={styles.tripledots}
                                     onClick={() => handleOptionsClick(item.id, item.ticket_number)}
@@ -232,6 +231,19 @@ const QueueOperatorPage = () => {
                                 </div>
                                 {showOptions && item.id === selectedItemId && (
                                   <div className={styles.optionsBlock}>
+                                    <button
+                                      style={{
+                                        color: 'white',
+                                        backgroundColor: 'green',
+                                        borderRadius: '5px',
+                                      }}
+                                      onClick={() => {
+                                        callCustomer(item.id)
+                                        setShowOptions(false);
+                                      }}
+                                    >
+                                      Вызвать
+                                    </button>
                                     <button onClick={(e) => {
                                       handleTicketModalOpen(item.id)
                                       setShowOptions(false)
@@ -253,15 +265,9 @@ const QueueOperatorPage = () => {
                                   </div>
                                 )}
                               </div>
-                            )}
-                          </Draggable>
                           )
                         })}
-                        {provided.placeholder}
                       </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
               </div>
             </div>
           </div>
@@ -458,54 +464,56 @@ const QueueOperatorPage = () => {
                     <div className={styles.thead__question}>Вопрос</div>
                     <div className={styles.thead__time}>Принимает</div>
                   </div>      
-                          <div className={`${styles.tbody__item__talon} `}>
-                            <div className={styles.tbody__talon}>
-                              <div className={styles.tbody__number}></div>
-                              <span
-                                style={
-                                  inQueue.category === 'pregnant'
-                                    ? { background: 'rgba(252, 190, 183, 1)' }
-                                    : inQueue.category === 'veteran'
-                                    ? { background: 'rgba(155, 228, 129, 1)' }
-                                    : inQueue.category === 'pensioner'
-                                    ? { background: 'rgba(234, 237, 93, 1)' }
-                                    : inQueue.category === 'disabled person'
-                                    ? { background: 'rgba(228, 129, 201, 1)' }
-                                    : undefined
-                                }
-                              ></span>{' '}
-                              {inQueue?.ticket_number}
-                            </div>
-                            <div className={styles.tbody__question}>{inQueue.queue}</div>
-                            <div className={styles.tbody__operator}>Operator1</div>
-                            <div className={styles.tbody__buttons}>
-                              <TripleDotsSVG
-                                className={styles.tripledots}
-                                onClick={() => handleOptionsClick(inQueue.id, inQueue.ticket_number)}
-                              />
-                            </div>
-                            {showOptions && inQueue.id === selectedItemId && (
-                              <div className={styles.optionsBlock}>
-                                <button onClick={(e) => {
-                                  handleTicketModalOpen(inQueue.id)
-                                  setShowOptions(false)
-                                  }} >Посмотреть талон</button>
-                                <button
-                                  style={{
-                                    color: 'red',
-                                    backgroundColor: '#f5f5f5',
-                                    borderRadius: '5px',
-                                  }}
-                                  onClick={() => {
-                                    setShowModal(true);
-                                    setShowOptions(false);
-                                  }}
-                                >
-                                  Удалить
-                                </button>
-                              </div>
-                            )}
-                          </div>   
+                    { inQueue?.map((item: any, index: number) => {
+                      <div className={`${styles.tbody__item__talon} `}>
+                      <div className={styles.tbody__talon}>
+                        <div className={styles.tbody__number}>{ index + 1 }</div>
+                        <span
+                          style={
+                            inQueue.category === 'pregnant'
+                              ? { background: 'rgba(252, 190, 183, 1)' }
+                              : inQueue.category === 'veteran'
+                              ? { background: 'rgba(155, 228, 129, 1)' }
+                              : inQueue.category === 'pensioner'
+                              ? { background: 'rgba(234, 237, 93, 1)' }
+                              : inQueue.category === 'disabled person'
+                              ? { background: 'rgba(228, 129, 201, 1)' }
+                              : undefined
+                          }
+                        ></span>{' '}
+                        { item.customer }
+                      </div>
+                      <div className={styles.tbody__question}>{inQueue.queue}</div>
+                      <div className={styles.tbody__operator}>Operator1</div>
+                      <div className={styles.tbody__buttons}>
+                        <TripleDotsSVG
+                          className={styles.tripledots}
+                          onClick={() => handleOptionsClick(inQueue.id, inQueue.ticket_number)}
+                        />
+                      </div>
+                      {showOptions && inQueue.id === selectedItemId && (
+                        <div className={styles.optionsBlock}>
+                          <button onClick={(e) => {
+                            handleTicketModalOpen(inQueue.id)
+                            setShowOptions(false)
+                            }} >Посмотреть талон</button>
+                          <button
+                            style={{
+                              color: 'red',
+                              backgroundColor: '#f5f5f5',
+                              borderRadius: '5px',
+                            }}
+                            onClick={() => {
+                              setShowModal(true);
+                              setShowOptions(false);
+                            }}
+                          >
+                            Удалить
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    }) }   
                 </div>
               </div>
             </div>

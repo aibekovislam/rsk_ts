@@ -11,5 +11,6 @@ export const ACTIONS = {
     shiftedQueues: "shiftedQueues",
     allQueues: "allQueues",
     booking: "booking",
-    error400: "error400"
+    error400: "error400",
+    waitingLIST: "waitingLIST"
 }

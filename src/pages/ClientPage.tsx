@@ -18,7 +18,7 @@ import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400 } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400, sendToWaitingList  } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
@@ -44,7 +44,6 @@ export const ClientPage: React.FC = () => {
     // Другая логика обработки выбранной фирмы
   };
 
-  const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -62,10 +61,6 @@ export const ClientPage: React.FC = () => {
   const handlePrint = () => {
     window.print();
   }
-
-  const handleNavigation = () => {
-    navigate("/auth");
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,6 +136,7 @@ export const ClientPage: React.FC = () => {
             Перевести
           </button>
           <button className={styles.complete} onClick={() => operatorEndServed(queue?.id)} >Завершить</button>
+          <button className={styles.btn} onClick={() => {sendToWaitingList(queue?.id)}}>В ожиданиe</button>
         </div>
       </div>
       { error400 ? (
