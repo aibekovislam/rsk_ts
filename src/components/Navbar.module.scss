@@ -48,6 +48,16 @@
 .nav_items {
   display: flex;
   align-items: center;
+  padding: 10px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13.5px;
+  font-size: 20px;
+  transition: 0.2s;
+  border: none;
+  color: inherit;
 }
 
 .nav_link_item {
