@@ -23,7 +23,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75%;
+    width: 85%;
 }
 
 .categoryBlock{
@@ -228,7 +228,7 @@
 }
 
 .switch{
-  cursor: grab;
+  cursor: pointer;
 }
 
 
@@ -644,4 +644,9 @@ background-color: rgba(231, 81, 81, 0.121);
   align-items: center;
   font-size: 40px;
   color: #333030b1;
+}
+
+.isWaiting{
+  border: 3px solid rgb(255, 165, 0);
+  // background-color: rgba(255, 166, 0, 0.416);
 }

@@ -9,6 +9,8 @@ import QueueOperatorPage from "../pages/QueueOperatorPage";
 import QueueHistoryOperatorPage from "../pages/QueueHistoryOperatorPage";
 import BookingOperatorPage from "../pages/BookingOperatorPage";
 import OfflinePage from "../pages/OfflinePage";
+import Chat from "../pages/Chat";
+import ChatDetail from "../pages/ChatDetail";
 
 export const MainRoutes = () => {
   return (
@@ -20,7 +22,9 @@ export const MainRoutes = () => {
         <Route path="/operator_stat" element={<Statistics />} />
         <Route path="/operator/queue_history" element={<QueueHistoryOperatorPage/>} ></Route>
         <Route path="/operator/queue_booking" element={<BookingOperatorPage/>} ></Route>
-        <Route path="/offline" element={<OfflinePage/>} ></Route>
+        <Route path="/offline" element={<OfflinePage/>}></Route>
+        <Route path="/chat" element={<Chat/>}></Route>
+        <Route path="/chat/detail" element={<ChatDetail/>}></Route>
       </Route>
       <Route path="/auth" element={<QueueAuthAdmin />}></Route>
     </Routes>
