@@ -4,7 +4,7 @@ import styles from "./Client.module.scss";
 import { ReactComponent as ClockSVG } from "../images/pepicons-print_clock.svg";
 import { ReactComponent as ChangeSVG } from "../images/Group (7).svg";
 import { ReactComponent as PrintSCG } from "../images/prime_print.svg";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { TranslateModal } from "../components/modals/clientModals/TranslateModal";
 import { useState } from "react";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
@@ -18,7 +18,7 @@ import { useQueueContext } from "../context/QueueContext";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, editTalon, shiftQueue } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400 } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
@@ -84,17 +84,17 @@ export const ClientPage: React.FC = () => {
 
   const [ changeDATA, setChangeDATA ] = useState(false);
 
-  // console.log(queue);
-
+  
   if (queueLoading) {
     return <div>Loading...</div>; // Или отобразите спиннер загрузки или другой индикатор
   }
 
-  console.log(windowData?.toString())
-
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
   return (
-    <div className={styles.wrapper}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.wrapper}>
       <div className={styles.wrapper_left}>
         <div className={styles.clock}>
           <ClockSVG />
@@ -143,7 +143,11 @@ export const ClientPage: React.FC = () => {
           <button className={styles.complete} onClick={() => operatorEndServed(queue?.id)} >Завершить</button>
         </div>
       </div>
-      <TranslateModal isOpen={isOpen} onClose={closeModal}>
+      { error400 ? (
+        <div>Вы слишком много переводили</div>
+      ) : (
+        <>
+          <TranslateModal isOpen={isOpen} onClose={closeModal}>
         <div className={styles.wrapper_modal}>
           <div className={styles.modal}>
             <div onClick={closeModal} className={styles.close}>
@@ -196,7 +200,12 @@ export const ClientPage: React.FC = () => {
           </button>
         </div>
       </div>
+        </>
+      ) }
     </div>
+    ) : (
+      <div>Отключен от системы</div>
+    )
   );
 };
 

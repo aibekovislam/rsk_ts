@@ -1,4 +1,4 @@
-export const BASE_URL = "http://35.184.55.194";
+export const BASE_URL = "http://35.228.114.191";
 
 export const ACTIONS = {
     queues: "queues",
@@ -10,5 +10,6 @@ export const ACTIONS = {
     windows: "windows",
     shiftedQueues: "shiftedQueues",
     allQueues: "allQueues",
-    booking: "booking"
+    booking: "booking",
+    error400: "error400"
 }

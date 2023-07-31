@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "./QueueOperatorPage.module.scss";
 import { ReactComponent as ArrowRightSVG } from "../images/chevron-forward-outline (2).svg";
 import { ReactComponent as SwitchSVG } from "../images/Vector (4).svg";
@@ -13,6 +13,7 @@ import Accordion, {
 } from "../components/modals/accordion/Accordion";
 import { ReactComponent as ArrowSVG } from "../images/fluent_ios-arrow-ltr-24-regular.svg";
 import { ReactComponent as CloseSVG } from "../images/Vector (6).svg";
+import useWebSocket from "../context/UseWebSocket";
 
 export let operator: string;
 
@@ -27,7 +28,6 @@ const QueueOperatorPage = () => {
     inQueue,
     rejectedQueues,
     getRejectedQueue,
-    status,
     shiftedQueues,
     getShiftedQueues,
   } = useQueueContext();
@@ -36,11 +36,7 @@ const QueueOperatorPage = () => {
 
   useEffect(() => {
     getCustomers();
-    getRejectedQueue();
-    getShiftedQueues();
   }, []);
-
-  console.log(shiftedQueues);
 
   const [content1, setContent1] = useState(false);
   const [content2, setContent2] = useState(false);
@@ -87,6 +83,19 @@ const QueueOperatorPage = () => {
     return `${hours}ч ${minutes}мин`;
   };
 
+  function convertCreatedAtToHours(created_at: string) {
+    const date = new Date(created_at);
+
+    const minutes = date.getMinutes();
+    const hours = date.getHours();
+
+    if (minutes > 60) {
+      return `${hours} час, ${minutes} минут`;
+    } else {
+      return `${minutes} мин`;
+    }
+  }
+
   interface categories {
     circleColor?: string;
     title?: string;
@@ -127,19 +136,17 @@ const QueueOperatorPage = () => {
 
   const [handleModal, setHandleModal] = useState(false);
 
-  const handleModalOpen = () => {
-    setHandleModal(true);
-  };
-
   const handleSelectPost = (post: IWindow) => {
     console.log("Должность", post);
   };
 
-  const [idState, setIdState] = useState(0);
+  const savedStatus = localStorage.getItem("status");
+  const initialStatus =
+    savedStatus === "Online" ? { status: "Online" } : { status: "Отключен" };
 
   console.log(queues);
 
-  return (
+  return initialStatus.status === "Online" ? (
     <div className={styles.hero}>
       <div className={styles.categoryBlock}>
         <div className={styles.bottomNav}>
@@ -255,7 +262,7 @@ const QueueOperatorPage = () => {
                                     {item.queue}
                                   </div>
                                   <div className={styles.tbody__time}>
-                                    {convertTime(item.in_queue_time)}
+                                    {convertCreatedAtToHours(item.created_at)}
                                   </div>
                                   <div className={styles.tbody__buttons}>
                                     <button
@@ -676,6 +683,8 @@ const QueueOperatorPage = () => {
         </div>
       )}
     </div>
+  ) : (
+    <div className={styles.offlineText}>Система отключена</div>
   );
 };
 

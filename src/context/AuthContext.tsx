@@ -80,7 +80,9 @@ function AuthContext({ children }: { children: React.ReactNode }) {
       );
       localStorage.setItem("tokens", JSON.stringify(tokens));
 
-      const { data } = await $axios.get(`${BASE_URL}/profile/`);
+      const { data } = await $axios.get(`${BASE_URL}/admins/profile/`);
+
+      localStorage.setItem("userID", JSON.stringify(data?.user))
 
       dispatch({
         type: ACTIONS.user,
@@ -88,7 +90,7 @@ function AuthContext({ children }: { children: React.ReactNode }) {
       });
 
       const oper = await axios.post(
-        `${BASE_URL}/operator/actions/come_in_system/`,
+        `${BASE_URL}/profile/operator/come_in_system/`,
         {},
         {
           headers: {

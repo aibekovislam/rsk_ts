@@ -77,8 +77,12 @@ const BookingOperatorPage = () => {
     setShowTicketModal(false);
   };
 
+  const savedStatus = localStorage.getItem('status');
+  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
+
   return (
-    <div className={styles.hero}>
+    initialStatus.status === "Online" ? (
+      <div className={styles.hero}>
       <div className={styles.categoryBlock}>
         <div className={styles.bottomNav}>
           <div className={styles.allCounter}>
@@ -167,6 +171,9 @@ const BookingOperatorPage = () => {
         <BookingModal ticketId={selectedTicketId} closeModal={closeModal}/>
       )}
     </div>
+    ) : (
+      <div>Отключен от системы</div>
+    )
   )
 }
 

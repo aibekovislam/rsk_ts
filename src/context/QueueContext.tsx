@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { createContext, PropsWithChildren, useContext, useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
 
@@ -26,7 +27,8 @@ const initState = {
     windows: [],
     shiftedQueues: [],
     allQueues: [],
-    booking: []
+    booking: [],
+    error400: null
 }
 
 let newQueues = [];
@@ -50,7 +52,9 @@ function reducer(state: any, action: any) {
         case ACTIONS.allQueues:
             return { ...state, allQueues: action.payload }
         case ACTIONS.booking:
-            return { ...state, booking: action.payload }      
+            return { ...state, booking: action.payload }
+        case ACTIONS.error400:
+            return { ...state, error400: action.payload }      
         default:
             return state;
     }
@@ -61,23 +65,60 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const navigate = useNavigate();
 
-    async function getCustomers() {
-        try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_customers_in_queue/`);
-            const filteredResults = res.data.filter((item: any) => item.is_served === null);
+
+    function getCustomers() {
+
+        const userID = localStorage.getItem("userID");
+
+        const websocketURL = `ws://35.228.114.191/ws/customers/${userID}/`;
+        const websocket = new WebSocket(websocketURL);
+
+        websocket.onopen = () => {
+            console.log('WebSocket connection is open.')
+        }
+
+        // Event listener for incoming messages from the server
+        websocket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('Received data from the server:', data);
+
+            const sortedData = data?.ticket_data.sort((a: any, b: any) => a.position - b.position)
+
             dispatch({
                 type: ACTIONS.queues,
-                payload: filteredResults
-                // payload: res.data
+                payload: sortedData
             })
-        } catch (error) {
-            console.log(error)
-        }
+        };
+        
+        // Event listener for WebSocket errors
+        websocket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        
+        // Event listener for when the connection is closed
+        websocket.onclose = (event) => {
+            console.log('WebSocket connection is closed.', event.code, event.reason);
+        };
     }
+
+    // async function getCustomers() {
+    //     try {
+    //         const res = await $axios.get(`${BASE_URL}/tickets/operator/get_customers_in_queue/`);
+    //         const filteredResults = res.data.filter((item: any) => item.is_served === null);
+    //         dispatch({
+    //             type: ACTIONS.queues,
+    //             payload: filteredResults
+    //             // payload: res.data
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
 
     async function getAllQueues() {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_served_customers_all/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_served_customers_all/`);
             dispatch({
                 type: ACTIONS.allQueues,
                 payload: res.data
@@ -98,7 +139,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function getRejectedQueue() {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/get_cancelled_customers/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_cancelled_customers/`);
             dispatch({
                 type: ACTIONS.rejectedQueue,
                 payload: res.data
@@ -111,7 +152,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     async function rejectQueue(id: number) {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_cancelled/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/mark_as_cancelled/`);
             navigate("/operator/queue");
             console.log(res.data);
         } catch (error) {
@@ -135,7 +176,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorStartServed = async (id: number) => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/start/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/start/`);
             dispatch({
                 type: ACTIONS.queue,
                 payload: res.data
@@ -169,7 +210,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorEndServed = async (id: number) => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/${id}/mark_as_served/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/mark_as_served/`);
             inQueueTALONDetail(id);
             console.log(res, "Закончено");
             navigate("/operator/queue");
@@ -184,17 +225,33 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
                 window: newWindow,
                 id: id
               };            
-            const res = await $axios.patch(`${BASE_URL}/operator/${id}/shift_window/`, shiftWindowData);
+            const res = await $axios.patch(`${BASE_URL}/tickets/operator/${id}/shift_window/`, shiftWindowData);
             getCustomers();
-            navigate("/operator/queue")
-        } catch (error) {
+            if(res.status === 400) {
+                console.log(res.data);
+            } else {
+                navigate("/operator/queue")
+            }
+        } catch (error: any) {
+            if (error.response && error.response.status === 400) {
+                console.log('Ошибка 400: неверный запрос');
+                dispatch({
+                    type: ACTIONS.error400,
+                    payload: true
+                })
+              } else {
+                dispatch({
+                    type: ACTIONS.error400,
+                    payload: null
+                })
+              }          
             console.log(error)
         }
     }
 
     const getShiftedQueues = async () => {
         try {
-            const res = await $axios.get(`${BASE_URL}/operator/shift_list/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/shift_list/`);
             dispatch({
                 type: ACTIONS.shiftedQueues,
                 payload: res.data
@@ -206,7 +263,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const operatorChangeStatus = async () => {
         try {
-            const res = await $axios.post(`${BASE_URL}/operator/change_status/`);
+            const res = await $axios.post(`${BASE_URL}/tickets/operator/change_status/`);
             dispatch({
                 type: ACTIONS.statusOfOperator,
                 payload: res.data
@@ -288,7 +345,8 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         allQueues: state.allQueues,
         getBooking,
         booking: state.booking,
-        deleteBooking
+        deleteBooking,
+        error400: state.error400
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
