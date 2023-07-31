@@ -191,9 +191,6 @@ export const ClientPage: React.FC = () => {
           <button className={styles.print} onClick={handlePrint}>
             <PrintSCG /> Распечатать
           </button>
-          <button className={styles.edit}>
-            <ChangeSVG /> Изменить
-          </button>
         </div>
       </div>
         </>

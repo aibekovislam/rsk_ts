@@ -137,13 +137,14 @@ const QueueOperatorPage = () => {
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
 
+
   return (
     initialStatus.status === "Online" ? (
       <div className={styles.hero}>
       <div className={styles.categoryBlock}>
         <div className={styles.bottomNav}>
           <div className={styles.allCounter}>
-            Всего - <span>{queues?.length + rejectedQueues?.length + Object.keys(inQueue).length + shiftedQueues?.length}</span>
+            Всего - <span>{queues?.length + rejectedQueues?.length + shiftedQueues?.length}</span>
           </div>
         </div>
         <div className={styles.categories}>
@@ -403,7 +404,7 @@ const QueueOperatorPage = () => {
                                   {item.ticket_number}
                                 </div>
                                 <div className={styles.tbody__question}>{item.queue}</div>
-                                <div className={styles.tbody__time}>{convertTime(item.in_queue_time)}</div>
+                                <div className={styles.tbody__time}>{item.waiting_time} минут</div>
                                 <div className={styles.tbody__buttons}>
                                   <TripleDotsSVG
                                     className={styles.tripledots}
@@ -438,86 +439,8 @@ const QueueOperatorPage = () => {
               </div>
             </div>
         </div>
-        <div onClick={(e) => setContent4(!content4)} className={styles.queue__state}>
-          <div className={styles.queue__state__title}>
-            <ArrowRightSVG
-              className={`${styles.arrowRight} ${content4 ? `${styles.reverseArrow}` : ``}`}
-            />
-            Принимается
-          </div>
-          <div className={styles.queue__state__counter}>{ Object.keys(inQueue).length !== 0  ? "1" : "0" }</div>
-        </div>
-      </div>
-      <div
-            style={
-              content4
-                ? { maxHeight: '100%', display: 'block' }
-                : { maxHeight: '0px', display: 'none' }
-            }
-            className={styles.tableBlock}
-          >
-            <div className={styles.table}>
-              <div className={styles.tableItems}>
-                <div className={styles.tableItem__tbody}>
-                  <div className={styles.tableItem__thead}>
-                    <div className={styles.thead__number}>Клиент №</div>
-                    <div className={styles.thead__question}>Вопрос</div>
-                    <div className={styles.thead__time}>Принимает</div>
-                  </div>      
-                    { inQueue?.map((item: any, index: number) => {
-                      <div className={`${styles.tbody__item__talon} `}>
-                      <div className={styles.tbody__talon}>
-                        <div className={styles.tbody__number}>{ index + 1 }</div>
-                        <span
-                          style={
-                            inQueue.category === 'pregnant'
-                              ? { background: 'rgba(252, 190, 183, 1)' }
-                              : inQueue.category === 'veteran'
-                              ? { background: 'rgba(155, 228, 129, 1)' }
-                              : inQueue.category === 'pensioner'
-                              ? { background: 'rgba(234, 237, 93, 1)' }
-                              : inQueue.category === 'disabled person'
-                              ? { background: 'rgba(228, 129, 201, 1)' }
-                              : undefined
-                          }
-                        ></span>{' '}
-                        { item.customer }
-                      </div>
-                      <div className={styles.tbody__question}>{inQueue.queue}</div>
-                      <div className={styles.tbody__operator}>Operator1</div>
-                      <div className={styles.tbody__buttons}>
-                        <TripleDotsSVG
-                          className={styles.tripledots}
-                          onClick={() => handleOptionsClick(inQueue.id, inQueue.ticket_number)}
-                        />
-                      </div>
-                      {showOptions && inQueue.id === selectedItemId && (
-                        <div className={styles.optionsBlock}>
-                          <button onClick={(e) => {
-                            handleTicketModalOpen(inQueue.id)
-                            setShowOptions(false)
-                            }} >Посмотреть талон</button>
-                          <button
-                            style={{
-                              color: 'red',
-                              backgroundColor: '#f5f5f5',
-                              borderRadius: '5px',
-                            }}
-                            onClick={() => {
-                              setShowModal(true);
-                              setShowOptions(false);
-                            }}
-                          >
-                            Удалить
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    }) }   
-                </div>
-              </div>
-            </div>
-      </div>
+       
+      </div>  
       {showModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
