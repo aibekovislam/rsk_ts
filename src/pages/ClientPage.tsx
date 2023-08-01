@@ -15,10 +15,11 @@ import Accordion, {
   IWindow,
 } from "../components/modals/accordion/Accordion";
 import { useQueueContext } from "../context/QueueContext";
+import Timer from "../components/Timer";
 
 export const ClientPage: React.FC = () => {
 
-  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400 } = useQueueContext();
+  const { getCustomers, queue, operatorEndServed, rejectQueue, shiftQueue, error400, sendToWaitingList  } = useQueueContext();
   const [ queueLoading, setQueueLoading ] = useState(true);
   const [ queuePage, setQueuePage ] = useState();
 
@@ -44,7 +45,6 @@ export const ClientPage: React.FC = () => {
     // Другая логика обработки выбранной фирмы
   };
 
-  const [selectedPost, setSelectedPost] = useState<IWindow | null>(null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -62,10 +62,6 @@ export const ClientPage: React.FC = () => {
   const handlePrint = () => {
     window.print();
   }
-
-  const handleNavigation = () => {
-    navigate("/auth");
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,7 +94,7 @@ export const ClientPage: React.FC = () => {
       <div className={styles.wrapper_left}>
         <div className={styles.clock}>
           <ClockSVG />
-          20:10
+          <Timer/>
         </div>
         <div className={styles.info}>
           <h1 className={styles.client_number}>{ queue?.ticket_number }</h1>
@@ -141,6 +137,7 @@ export const ClientPage: React.FC = () => {
             Перевести
           </button>
           <button className={styles.complete} onClick={() => operatorEndServed(queue?.id)} >Завершить</button>
+          <button className={styles.btn} onClick={() => {sendToWaitingList(queue?.id)}}>В ожиданиe</button>
         </div>
       </div>
       { error400 ? (
@@ -194,9 +191,6 @@ export const ClientPage: React.FC = () => {
         <div className={styles.buttons}>
           <button className={styles.print} onClick={handlePrint}>
             <PrintSCG /> Распечатать
-          </button>
-          <button className={styles.edit}>
-            <ChangeSVG /> Изменить
           </button>
         </div>
       </div>

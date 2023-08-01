@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
     },
     {
       icon: <ChartSVG />,
-      title: "Статистика",
+      title: "Отчеты",
       link: "/operator_stat",
     },
   ];
@@ -62,6 +62,8 @@ const Navbar: React.FC = () => {
     setSwitchOn(!switchOn);
     operatorChangeStatus();
   };
+
+  const navigate = useNavigate();
 
   return (
     <header>
@@ -85,7 +87,11 @@ const Navbar: React.FC = () => {
             </div>
 
             {initialStatus.status === "Online" ? (
-              <div className={styles.chat}>
+              <div
+                style={{ cursor: "pointer" }}
+                className={styles.chat}
+                onClick={() => navigate("/chat")}
+              >
                 Рабочий чат
                 <ChatSVG className={styles.chatSVG} />
               </div>

@@ -54,7 +54,9 @@ function reducer(state: any, action: any) {
         case ACTIONS.booking:
             return { ...state, booking: action.payload }
         case ACTIONS.error400:
-            return { ...state, error400: action.payload }      
+            return { ...state, error400: action.payload }
+        case ACTIONS.waitingLIST:
+            return { ...state, waitingLIST: action.payload }      
         default:
             return state;
     }
@@ -100,21 +102,6 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             console.log('WebSocket connection is closed.', event.code, event.reason);
         };
     }
-
-    // async function getCustomers() {
-    //     try {
-    //         const res = await $axios.get(`${BASE_URL}/tickets/operator/get_customers_in_queue/`);
-    //         const filteredResults = res.data.filter((item: any) => item.is_served === null);
-    //         dispatch({
-    //             type: ACTIONS.queues,
-    //             payload: filteredResults
-    //             // payload: res.data
-    //         })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
 
     async function getAllQueues() {
         try {
@@ -188,20 +175,14 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
     }
 
 
-    const inQueueTALONDetail = async (id: number) => {
+    const inQueueTALONDetail = async () => {
         try {
-            const res = await $axios.get(`${BASE_URL}/customers/${id}`);
-            if(res.data.is_served === true || res.data.is_served === false) {
-                dispatch({
-                    type: ACTIONS.inQueue,
-                    payload: []
-                })
-            } else {
-                dispatch({
-                    type: ACTIONS.inQueue,
-                    payload: res.data
-                })
-            }
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_waiting_list/`);
+            
+            dispatch({
+                type: ACTIONS.inQueue,
+                payload: res.data
+            })
         } catch (error) {
             console.log(error)
         }
@@ -211,7 +192,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
     const operatorEndServed = async (id: number) => {
         try {
             const res = await $axios.post(`${BASE_URL}/tickets/operator/${id}/mark_as_served/`);
-            inQueueTALONDetail(id);
+            inQueueTALONDetail();
             console.log(res, "Закончено");
             navigate("/operator/queue");
         } catch (error) {
@@ -278,7 +259,7 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
     const editTalon = async (id: number, editedTalon: any) => {
         try {
             const res = await $axios.patch(`${BASE_URL}/customers/${id}/`, editedTalon);
-            inQueueTALONDetail(id);
+            inQueueTALONDetail();
         } catch (error) {
             console.log(error)
         }
@@ -286,10 +267,10 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
 
     const getAllWindows = async () => {
         try {
-            const res = await $axios.get(`${BASE_URL}/branches/window/`);
+            const res = await $axios.get(`${BASE_URL}/tickets/operator/get_windows_for_transfer/`);
             dispatch({
                 type: ACTIONS.windows,
-                payload: res.data.results
+                payload: res.data
             })
             console.log(res)
         } catch (error) {
@@ -314,6 +295,48 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
             await $axios.delete(`${BASE_URL}/booking/${id}/`);
             getBooking();
             console.log('Deleted')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const sendToWaitingList = async (id: number) => {
+        try {
+            const response = await $axios.post(`${BASE_URL}/tickets/operator/${id}/post_on_waiting_list/`);
+            console.log(response.data);
+            navigate("/operator/queue/")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getWaitingList = async () => {
+        try {
+            const response = await $axios.get(`${BASE_URL}/tickets/operator/get_waiting_list/`);
+            console.log(response);
+    
+            dispatch({
+                type: ACTIONS.inQueue,
+                payload: response.data,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const callCustomer = async (id: number) => {
+        try {
+            const resposne = await $axios.get(`${BASE_URL}/tickets/operator/${id}/call/`);
+            console.log(resposne.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const moveToTheCustomer = async (id: number) => {
+        try {
+            const response = await $axios.post(`${BASE_URL}/tickets/operator/${id}/move_to_the_end/`);
+            console.log(response.data);
         } catch (error) {
             console.log(error)
         }
@@ -346,7 +369,12 @@ export const QueueContext = ({ children }: PropsWithChildren) => {
         getBooking,
         booking: state.booking,
         deleteBooking,
-        error400: state.error400
+        error400: state.error400,
+        getWaitingList,
+        waitingLIST: state.waitingLIST,
+        sendToWaitingList,
+        callCustomer,
+        moveToTheCustomer
     };
 
     return <queueContext.Provider value={value}>{children}</queueContext.Provider>
