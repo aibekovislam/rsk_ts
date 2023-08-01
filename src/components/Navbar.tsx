@@ -52,8 +52,9 @@ const Navbar: React.FC = () => {
     },
   ];
 
-  const savedStatus = localStorage.getItem('status');
-  const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
+  const savedStatus = localStorage.getItem("status");
+  const initialStatus =
+    savedStatus === "Online" ? { status: "Online" } : { status: "Отключен" };
 
   const [switchOn, setSwitchOn] = useState(initialStatus.status === "Online");
 
@@ -61,7 +62,6 @@ const Navbar: React.FC = () => {
     setSwitchOn(!switchOn);
     operatorChangeStatus();
   };
-
 
   return (
     <header>
@@ -72,52 +72,59 @@ const Navbar: React.FC = () => {
               <LogoSVG />
             </div>
             <div className={styles.timeBreak}>
-           {initialStatus.status === "Online" ? "Онлайн" : "Отключен"}
-                <label className={styles.switch}>
-                  <input type="checkbox" id="switch" checked={switchOn} onChange={handleSwitchChange}
-                  />
-                  <span className={styles.slider}></span>
-                </label>
-          </div>
-            
-            { initialStatus.status === "Online" ? (
+              {initialStatus.status === "Online" ? "Онлайн" : "Отключен"}
+              <label className={styles.switch}>
+                <input
+                  type="checkbox"
+                  id="switch"
+                  checked={switchOn}
+                  onChange={handleSwitchChange}
+                />
+                <span className={styles.slider}></span>
+              </label>
+            </div>
+
+            {initialStatus.status === "Online" ? (
               <div className={styles.chat}>
                 Рабочий чат
                 <ChatSVG className={styles.chatSVG} />
               </div>
-            ) : (
-              null
-            ) }
+            ) : null}
           </div>
           <div className={styles.user}>
-            <div className={styles.user_name}>Оператор: { user?.first_name }</div>
+            <div className={styles.user_name}>Оператор: {user?.first_name}</div>
             <div className={styles.user_photo}>
-              <img src={`${BASE_URL}${user?.avatar}`} className={styles.avatar}  />
+              <img
+                src={`${BASE_URL}${user?.avatar}`}
+                className={styles.avatar}
+              />
             </div>
-            <button className={styles.logOut} onClick={() => logout()}>Выйти</button>
+            <button className={styles.logOut} onClick={() => logout()}>
+              Выйти
+            </button>
           </div>
         </div>
       </div>
       <div className={styles.navigation}>
         <div className={styles.nav}>
-          { initialStatus.status === "Online" ? (
+          {initialStatus.status === "Online" ? (
             <>
               {pages.map((page) => (
-              <ul className={styles.nav_items} key={page.title}>
-                <li className={styles.nav_link_item}>
-                  <Link to={page.link}>
-                    <button className={styles.nav_link_item}>
-                      {page.icon}
-                      {page.title}
-                    </button>
-                  </Link>
-                </li>
-              </ul>
-            ))}
+                <ul className={styles.nav_items} key={page.title}>
+                  <li className={styles.nav_link_item}>
+                    <Link to={page.link}>
+                      <button className={styles.nav_link_item}>
+                        {page.icon}
+                        {page.title}
+                      </button>
+                    </Link>
+                  </li>
+                </ul>
+              ))}
             </>
           ) : (
             <div>Вы отключены от системы</div>
-          ) }
+          )}
         </div>
       </div>
     </header>
