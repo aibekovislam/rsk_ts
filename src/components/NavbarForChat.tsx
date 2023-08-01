@@ -14,7 +14,7 @@ import { useQueueContext } from "../context/QueueContext";
 import { useAuthContext } from "../context/AuthContext";
 import { BASE_URL } from "../utils/consts";
 
-const Navbar: React.FC = () => {
+const NavbarForChat: React.FC = () => {
   const { operatorChangeStatus, status } = useQueueContext();
   const { user, logout } = useAuthContext();
 
@@ -23,34 +23,6 @@ const Navbar: React.FC = () => {
     title: string;
     link: string;
   }
-
-  const pages: Ipage[] = [
-    {
-      icon: <IconSVG />,
-      title: "Клиент",
-      link: "/client",
-    },
-    {
-      icon: <Icon2SVG />,
-      title: "Список очередей",
-      link: "/operator/queue",
-    },
-    {
-      icon: <Icon3SVG />,
-      title: "Список операций",
-      link: "/operator/queue_history",
-    },
-    {
-      icon: <RecordSVG />,
-      title: "Записи",
-      link: "/operator/queue_booking",
-    },
-    {
-      icon: <ChartSVG />,
-      title: "Отчеты",
-      link: "/operator_stat",
-    },
-  ];
 
   const savedStatus = localStorage.getItem('status');
   const initialStatus = savedStatus === 'Online' ? { status: 'Online' } : { status: "Отключен" };
@@ -66,11 +38,11 @@ const Navbar: React.FC = () => {
 
 
   return (
-    <header>
+    <header style={{ borderBottom: "1px solid darkblue" }} >
       <div className={styles.container}>
         <div className={styles.header_nav}>
           <div className={styles.header__nav__start}>
-            <div className={styles.header_logo}>
+            <div className={styles.header_logo} onClick={() => navigate("/")} >
               <LogoSVG />
             </div>
             <div className={styles.timeBreak}>
@@ -100,30 +72,8 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className={styles.navigation}>
-        <div className={styles.nav}>
-          { initialStatus.status === "Online" ? (
-            <>
-              {pages.map((page) => (
-              <ul className={styles.nav_items} key={page.title}>
-                <li className={styles.nav_link_item}>
-                  <Link to={page.link}>
-                    <button className={styles.nav_link_item}>
-                      {page.icon}
-                      {page.title}
-                    </button>
-                  </Link>
-                </li>
-              </ul>
-            ))}
-            </>
-          ) : (
-            <div>Вы отключены от системы</div>
-          ) }
-        </div>
-      </div>
     </header>
   );
 };
 
-export default Navbar;
+export default NavbarForChat;

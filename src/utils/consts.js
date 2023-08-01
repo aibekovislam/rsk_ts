@@ -12,5 +12,12 @@ export const ACTIONS = {
     allQueues: "allQueues",
     booking: "booking",
     error400: "error400",
-    waitingLIST: "waitingLIST"
+    waitingLIST: "waitingLIST",
+    cancelled_customers: "cancelled_customers",
+    cancelled_customers_days: "cancelled_customers_days",
+    cancelled_customers_year: "cancelled_customers_year",
+    chats: "chats",
+    messages: "messages",
+    operatorsInBranch: "operatorsInBranch",
+    historyMessages: "historyMessages"
 }

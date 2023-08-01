@@ -4,6 +4,8 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueueContext } from './context/QueueContext';
 import AuthContext from "./context/AuthContext";
+import { ReportContext } from './context/ReportsContext';
+import { ChatContext } from './context/ChatContext';
 
 
 const root = ReactDOM.createRoot(
@@ -13,7 +15,11 @@ root.render(
   <BrowserRouter>
     <AuthContext>
       <QueueContext>
-        <App />
+        <ReportContext>
+          <ChatContext>
+            <App />
+          </ChatContext>
+        </ReportContext>
       </QueueContext>
     </AuthContext>
   </BrowserRouter>

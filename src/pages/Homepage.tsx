@@ -21,7 +21,7 @@ export const Homepage = () => {
   return(
   <div className={styles.heyThere}>
     Добро пожаловать!
-    <p className={styles.niceWork}>Принятной работы</p>
+    <p className={styles.niceWork}>Приятной работы</p>
   </div>
   );
 };
