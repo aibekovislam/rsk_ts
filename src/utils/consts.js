@@ -19,5 +19,8 @@ export const ACTIONS = {
     chats: "chats",
     messages: "messages",
     operatorsInBranch: "operatorsInBranch",
-    historyMessages: "historyMessages"
+    historyMessages: "historyMessages",
+    createdChat: "createdChat",
+    admin: "admin",
+    messages2: "messages2"
 }

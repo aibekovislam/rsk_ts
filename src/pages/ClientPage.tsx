@@ -15,6 +15,7 @@ import Accordion, {
   IWindow,
 } from "../components/modals/accordion/Accordion";
 import { useQueueContext } from "../context/QueueContext";
+import Timer from "../components/Timer";
 
 export const ClientPage: React.FC = () => {
 
@@ -93,7 +94,7 @@ export const ClientPage: React.FC = () => {
       <div className={styles.wrapper_left}>
         <div className={styles.clock}>
           <ClockSVG />
-          20:10
+          <Timer/>
         </div>
         <div className={styles.info}>
           <h1 className={styles.client_number}>{ queue?.ticket_number }</h1>

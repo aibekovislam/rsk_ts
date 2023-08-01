@@ -12,30 +12,30 @@ import ArrowBackSVG from '../images/ep_back.svg';
 import MessageMySelf from '../components/MessageMySelf';
 import { useChatContext } from '../context/ChatContext';
 import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import NavbarForChat from '../components/NavbarForChat';
-import { useAuthContext } from '../context/AuthContext';
 
 export let lastMessage = '';
+export let chatID2: any;
 
 const ChatDetail = () => {
   const [ admin, setAdmin ] = useState(false);
   const [ operator, setOperator ] = useState(true);
   const [ state, setState ] = useState(false);
-  const { user1, user2, username } = useParams();
+  const { user1, user2, username, chatID } = useParams();
 
-  const { sendMessage, getAllMessages, messages, getHistoryMessages, historyMessages, createChat } = useChatContext();
+  const { sendMessage, getAllMessages, messages, getHistoryMessages, historyMessages } = useChatContext();
 
   useEffect(() => {
     getAllMessages(user1, user2);
-    getHistoryMessages(2)
+    getHistoryMessages(chatID)
+    chatID2 = chatID
   }, [])
 
   const [ messageValue, setMessageValue ] = useState('');
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    sendMessage(messageValue, 2);
+    sendMessage(messageValue, chatID);
     lastMessage = messageValue;
     setMessageValue('')
   }
@@ -78,7 +78,7 @@ const ChatDetail = () => {
                   <div className={styles.mainChat}>
                       <div className={styles.ChatTitle}>
                           <img src={ArrowBackSVG} onClick={() => navigate(-1)} />
-                          { username }
+                          { username === null ? username  : "User" }
                       </div>
                       <div className={styles.ChatSelf}>
                             { historyMessages?.map((message: any) => (

@@ -25,7 +25,7 @@ export const MainRoutes = () => {
         <Route path="/offline" element={<OfflinePage/>}></Route>
         <Route path="/chat" element={<Chat/>}></Route>
       </Route>
-        <Route path="/chat/detail/:user1/:user2/:username" element={<ChatDetail />} />
+        <Route path="/chat/detail/:user1/:user2/:username/:chatID" element={<ChatDetail />} />
       <Route path="/auth" element={<QueueAuthAdmin />}></Route>
     </Routes>
   );

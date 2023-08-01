@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { createContext, PropsWithChildren, useContext, useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import { chatID1 } from '../pages/Chat';
+import { chatID2 } from '../pages/ChatDetail';
 import $axios from '../utils/axios';
 import { ACTIONS, BASE_URL } from '../utils/consts';
 
@@ -22,8 +24,11 @@ export interface ChatProps {
 const initState = {
     chats: [],
     messages: [],
+    messages2: [],
     operatorsInBranch: [],
-    historyMessages: []
+    historyMessages: [],
+    createdChat: null,
+    admin: null
 }
 
 function reducer(state: any, action: any) {
@@ -35,7 +40,13 @@ function reducer(state: any, action: any) {
         case ACTIONS.operatorsInBranch:
             return { ...state, operatorsInBranch: action.payload }
         case ACTIONS.historyMessages:
-            return { ...state, historyMessages: action.payload } 
+            return { ...state, historyMessages: action.payload }
+        case ACTIONS.createdChat:
+            return { ...state, createdChat: action.payload }
+        case ACTIONS.admin:
+            return { ...state, admin: action.payload }
+        case ACTIONS.messages2:
+            return { ...state, messages2: action.payload }
         default:
             return state;
     }
@@ -58,6 +69,8 @@ export const ChatContext = ({ children }: PropsWithChildren) => {
         }
     }
 
+    const processedMessageIds = new Set();  
+
     const getAllMessages = async (user_id: string, cient_id: string) => {
         try {
             const websocketURL = `ws://35.228.114.191/ws/private_chat/${user_id}/${cient_id}/`;
@@ -66,16 +79,22 @@ export const ChatContext = ({ children }: PropsWithChildren) => {
             websocket.onopen = () => {
                 console.log('WebSocket connection is open.')
             }
-
+            
             // Event listener for incoming messages from the server
             websocket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
+                console.log('Received data from the server:', data);
+                const messageID = data?.message?.id;
 
                 dispatch({
                     type: ACTIONS.messages,
                     payload: data
                 })
-                getHistoryMessages(2)
+                if(chatID2) {
+                    getHistoryMessages(Number(chatID2))
+                } else if(chatID1) {
+                    getHistoryMessages(+chatID1)
+                }
             };
             
             // Event listener for WebSocket errors
@@ -98,7 +117,11 @@ export const ChatContext = ({ children }: PropsWithChildren) => {
                 user1: user1,
                 user2: user2
             }
-            const response = await $axios.post(`${BASE_URL}/chat/private_chat/create_chat/`, data)
+            const response = await $axios.post(`${BASE_URL}/chat/private_chat/create_chat/`, data);
+            dispatch({
+                type: ACTIONS.createdChat,
+                payload: response.data
+            })
         } catch (error) {
             console.log(error)
         }
@@ -128,17 +151,45 @@ export const ChatContext = ({ children }: PropsWithChildren) => {
         }
     }
 
-    const getHistoryMessages = async (private_chat_id:number) => {
+    const getHistoryMessages = async (private_chat_id: number) => {
         try {
-            const response = await $axios.get(`${BASE_URL}/chat/private_message/messages/${private_chat_id}/`);
-            dispatch({
-                type: ACTIONS.historyMessages,
-                payload: response.data
-            })
+          const response = await $axios.get(`${BASE_URL}/chat/private_message/messages/${private_chat_id}/`);
+          dispatch({
+            type: ACTIONS.historyMessages,
+            payload: response.data
+          });
+      
+          const messages = response.data;
+          if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            return lastMessage.content;
+          } else {
+            return 'Последних сообщений нет';
+          }
         } catch (error) {
-            console.log(error)
+          console.log(error);
+          return '';
         }
-    }
+      };
+
+      const checkAdminAndGetAdmin = async () => {
+        try {
+          const response = await $axios.get(`${BASE_URL}/tickets/operator/get_branch_users/`);
+          const users = response.data;
+      
+          const admin = users.find((user: any) => user.profile.position !== "operator" && user.profile.position !== "regular" && user.profile.position !== "registrator");
+
+          dispatch({
+            type: ACTIONS.admin,
+            payload: admin
+          });
+        } catch (error) {
+          console.log(error);
+          return null;
+        }
+      };
+      
+      
 
     const value = {
         getAllChats,
@@ -150,7 +201,10 @@ export const ChatContext = ({ children }: PropsWithChildren) => {
         allOperatorsWorkingInBranch,
         operatorsInBranch: state.operatorsInBranch,
         getHistoryMessages,
-        historyMessages: state.historyMessages
+        historyMessages: state.historyMessages,
+        createdChat: state.createdChat,
+        checkAdminAndGetAdmin,
+        admin_state: state.admin,
     }
 
     return <chatContext.Provider value={value}>{children}</chatContext.Provider>
